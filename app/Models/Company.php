@@ -17,7 +17,7 @@ class Company extends Model
    */
   protected $primaryKey = 'companyId';
 
-  protected $fillable = ['companyName', 'companyAddr', 'active'];
+  protected $fillable = ['companyName', 'companyAddr'];
 
   public static function show(Request $request) {
     $companyId = $request->id;
