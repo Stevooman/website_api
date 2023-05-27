@@ -30,25 +30,28 @@ class CompaniesController extends Controller
 
 
   public function create(Request $request) {
-    $validator = Validator::make($request->all(), [
-      'companyName' => 'required|string|max:30',
-      'companyAddr' => 'required|string|max:100',
-      'active' => 'nullable|integer|min:0|max:1'
-    ]);
-
-    if ($validator->fails()) {
-      $ex = new ValidationException($validator);
-      return response()->json($ex->validator->errors()->getMessages());
+    try {
+      $validData = $this->validate($request, [
+        'companyName' => 'required|string|max:30',
+        'companyAddr' => 'required|string|max:100',
+        'active' => 'nullable|integer|min:0|max:1',
+      ]);
+    } catch (ValidationException $e) {
+      $messages = $e->validator->errors()->getMessages();
+      throw new CustomValidationException(
+        $messages,
+        'Input Error',
+        'One or more fields did not pass validation.'
+      );
     }
 
-    $company = new Company;
-    $company->companyName = $request->companyName;
-    $company->companyAddr = $request->companyAddr;
-    if ($request->active) {
-      $company->active = $request->active;
-    }
+    try {
+      Company::insert($validData);
 
-    $company->save();
+    } catch (QueryException $e) {
+      throw new \Exception($e->getMessage());
+    }
+    
     return response()->json(['status' => 'success']);
   }
 
@@ -61,7 +64,7 @@ class CompaniesController extends Controller
     $active = $request->active;
 
     try {
-      $validatedArr = $this->validate($request, [
+      $this->validate($request, [
       'companyName' => 'nullable|string|max:30',
       'companyAddr' => 'nullable|string|max:100',
       'active' => 'nullable|integer|min:0|max:1',
@@ -75,7 +78,7 @@ class CompaniesController extends Controller
       );
     }
 
-    // Build data array to update the model with
+    // Build data array to update the model
     $updateData = $this->getUpdateArray($companyName, $companyAddr, $active);
 
     try {
@@ -90,7 +93,7 @@ class CompaniesController extends Controller
 
 
   public function delete(Request $request) {
-
+    $companyId = $request->companyId;
   }
 
 
@@ -98,10 +101,10 @@ class CompaniesController extends Controller
    * Build an array of parameters used to update the database.
    * @param mixed $name The company name
    * @param mixed $address The company address
-   * @param mixed $active 1 = active, 2 = not active
+   * @param int $active 1 = active, 2 = not active
    * @return array
    */
-  private function getUpdateArray($name, $address, $active) {
+  private function getUpdateArray($name = '', $address = '', int $active = null) {
     $updateData = [];
     if ($name) {
       $updateData['companyName'] = $name;

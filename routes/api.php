@@ -24,4 +24,5 @@ Route::controller(CompaniesController::class)->group(function () {
   Route::get('companies/{companyId}', 'showOne')->name('companies.showOne');
   Route::post('companies', 'create')->name('companies.create');
   Route::put('companies/{companyId}', 'update')->name('companies.update');
+  Route::delete('companies/{companyId}', 'delete')->name('companies.delete');
 });
