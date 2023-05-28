@@ -19,6 +19,7 @@ return new class extends Migration {
 			$table->string('password', 60)->default('');
 			$table->timestamp('created_at')->useCurrent();
 			$table->timestamp('updated_at')->nullable()->default(DB::raw('NULL ON UPDATE CURRENT_TIMESTAMP'));
+			$table->softDeletes();
     });
 	}
 

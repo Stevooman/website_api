@@ -16,6 +16,7 @@ return new class extends Migration {
 			$table->string('title', 40)->default('');
 			$table->timestamp('created_at')->useCurrent();
 			$table->timestamp('updated_at')->nullable()->default(DB::raw('NULL ON UPDATE CURRENT_TIMESTAMP'));
+			$table->softDeletes();
 
 			$table->foreign('systemId')->references('id')->on('systems')->onDelete('cascade');
 		});
