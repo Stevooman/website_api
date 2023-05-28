@@ -101,7 +101,7 @@ class CompaniesController extends Controller
    * Build an array of parameters used to update the database.
    * @param mixed $name The company name
    * @param mixed $address The company address
-   * @param int $active 1 = active, 2 = not active
+   * @param int $active 1 = active, 0 = not active
    * @return array
    */
   private function getUpdateArray($name = '', $address = '', int $active = null) {

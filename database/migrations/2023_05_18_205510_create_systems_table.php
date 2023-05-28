@@ -11,14 +11,14 @@ return new class extends Migration {
 	public function up(): void
 	{
 		Schema::create('systems', function (Blueprint $table) {
-			$table->tinyIncrements('systemId')->autoIncrement();
+			$table->tinyIncrements('id')->autoIncrement();
 			$table->string('name', 50)->default('');
 			$table->tinyInteger('companyId')->default(0)->unsigned();
       $table->date('releaseDate')->nullable();
 			$table->timestamp('created_at')->useCurrent();
 			$table->timestamp('updated_at')->nullable()->default(DB::raw('NULL ON UPDATE CURRENT_TIMESTAMP'));
 
-			$table->foreign('companyId')->references('companyId')->on('companies')->onDelete('cascade');
+			$table->foreign('companyId')->references('id')->on('companies')->onDelete('cascade');
 		});
 	}
 

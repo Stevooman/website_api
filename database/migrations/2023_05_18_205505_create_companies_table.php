@@ -11,7 +11,7 @@ return new class extends Migration {
   public function up(): void
   {
     Schema::create('companies', function (Blueprint $table) {
-      $table->tinyIncrements('companyId')->autoIncrement();
+      $table->tinyIncrements('id')->autoIncrement();
       $table->string('companyName', 30)->default('');
       $table->string('companyAddr', 100)->default('');
       $table->tinyInteger('active')->default(1);
