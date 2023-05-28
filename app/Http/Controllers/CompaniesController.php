@@ -7,14 +7,9 @@ use App\Models\Company;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class CompaniesController extends Controller
 {
-  public function __construct(Request $request) {
-
-  }
-
 
   public function index(Request $request) {
     $data = Company::all();
@@ -26,6 +21,12 @@ class CompaniesController extends Controller
     
     $company = Company::find($request->companyId);
     return response()->json($company);
+  }
+
+
+  public function showAllActive(Request $request) {
+    $companies = Company::where('active', 1)->get();
+    return response()->json($companies);
   }
 
 
@@ -82,7 +83,7 @@ class CompaniesController extends Controller
     $updateData = $this->getUpdateArray($companyName, $companyAddr, $active);
 
     try {
-      $updated = Company::where('companyId', $companyId)->update($updateData);
+      $updated = Company::where('id', $companyId)->update($updateData);
 
     } catch (QueryException $e) {
       throw new \Exception($e->getMessage());
@@ -94,6 +95,15 @@ class CompaniesController extends Controller
 
   public function delete(Request $request) {
     $companyId = $request->companyId;
+
+    try {
+      $deleted = Company::where('id', $companyId)->delete();
+      
+    } catch (QueryException $e) {
+      throw new \Exception($e->getMessage());
+    }
+
+    return response()->json(['deleted' => $deleted]);
   }
 
 
@@ -112,7 +122,7 @@ class CompaniesController extends Controller
     if ($address) {
       $updateData['companyAddr'] = $address;
     }
-    if ($active != null) {
+    if ($active != null || $active === 0) {
       $updateData['active'] = $active;
     }
 
