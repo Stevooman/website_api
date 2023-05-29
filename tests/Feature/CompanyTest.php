@@ -10,6 +10,7 @@ use App\Models\Company;
 
 class CompanyTest extends TestCase
 {
+  use RefreshDatabase;
 
   public function testIndexReturnsAllCompaniesInTable(): void 
   {
