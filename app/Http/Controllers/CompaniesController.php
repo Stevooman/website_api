@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\CustomValidationException;
 use App\Models\Company;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use App\Http\Requests\Company\CompanyPostRequest;
+use App\Http\Requests\Company\CompanyPutRequest;
 
 class CompaniesController extends Controller
 {
 
-  public function index(Request $request) {
+  public function index() {
     $data = Company::all();
     return response()->json($data);
   }
@@ -24,72 +24,37 @@ class CompaniesController extends Controller
   }
 
 
-  public function showAllActive(Request $request) {
+  public function showAllActive() {
     $companies = Company::where('active', 1)->get();
     return response()->json($companies);
   }
 
 
-  public function create(Request $request) {
-    try {
-      $validData = $this->validate($request, [
-        'companyName' => 'required|string|max:30',
-        'companyAddr' => 'required|string|max:100',
-        'active' => 'nullable|integer|min:0|max:1',
-      ]);
-    } catch (ValidationException $e) {
-      $messages = $e->validator->errors()->getMessages();
-      throw new CustomValidationException(
-        $messages,
-        'Input Error',
-        'One or more fields did not pass validation.'
-      );
-    }
+  public function create(CompanyPostRequest $request) {
 
     try {
-      Company::insert($validData);
+      Company::insert($request->all());
 
     } catch (QueryException $e) {
       throw new \Exception($e->getMessage());
     }
     
-    return response()->json(['status' => 'success']);
+    return response()->json(['status' => 'success'], 201);
   }
 
 
-  public function update(Request $request) {
+  public function update(CompanyPutRequest $request) {
 
     $companyId = $request->companyId;
-    $companyName = $request->companyName;
-    $companyAddr = $request->companyAddr;
-    $active = $request->active;
 
     try {
-      $this->validate($request, [
-      'companyName' => 'nullable|string|max:30',
-      'companyAddr' => 'nullable|string|max:100',
-      'active' => 'nullable|integer|min:0|max:1',
-      ]);
-    } catch (ValidationException $e) {
-      $messages = $e->validator->errors()->getMessages();
-      throw new CustomValidationException(
-        $messages,
-        'Input Error',
-        'One or more fields did not pass validation.'
-      );
-    }
-
-    // Build data array to update the model
-    $updateData = $this->getUpdateArray($companyName, $companyAddr, $active);
-
-    try {
-      $updated = Company::where('id', $companyId)->update($updateData);
+      $updated = Company::whereId($companyId)->update($request->all());
 
     } catch (QueryException $e) {
       throw new \Exception($e->getMessage());
     }
 
-    return response()->json(['updated' => $updated]);
+    return response()->json(['updated' => $updated], 200);
   }
 
 
@@ -97,35 +62,12 @@ class CompaniesController extends Controller
     $companyId = $request->companyId;
 
     try {
-      $deleted = Company::where('id', $companyId)->delete();
+      $deleted = Company::whereId($companyId)->delete();
       
     } catch (QueryException $e) {
       throw new \Exception($e->getMessage());
     }
 
-    return response()->json(['deleted' => $deleted]);
-  }
-
-
-  /**
-   * Build an array of parameters used to update the database.
-   * @param mixed $name The company name
-   * @param mixed $address The company address
-   * @param int $active 1 = active, 0 = not active
-   * @return array
-   */
-  private function getUpdateArray($name = '', $address = '', int $active = null) {
-    $updateData = [];
-    if ($name) {
-      $updateData['companyName'] = $name;
-    }
-    if ($address) {
-      $updateData['companyAddr'] = $address;
-    }
-    if ($active != null || $active === 0) {
-      $updateData['active'] = $active;
-    }
-
-    return $updateData;
+    return response()->json(['deleted' => $deleted], 200);
   }
 }
