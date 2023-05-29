@@ -5,11 +5,12 @@ namespace Tests;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Faker\Generator;
 use Faker\Factory;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-	use CreatesApplication, DatabaseTransactions;
+	use CreatesApplication, RefreshDatabase;
 
 	private Generator $faker;
 
