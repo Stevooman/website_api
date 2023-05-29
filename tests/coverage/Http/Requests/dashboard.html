@@ -2,12 +2,12 @@
 <html lang="en">
  <head>
   <meta charset="UTF-8">
-  <title>Dashboard for C:\git\website_api\app\Providers</title>
+  <title>Dashboard for C:\git\website_api\app\Http\Requests</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="../_css/bootstrap.min.css?v=10.1.2" rel="stylesheet" type="text/css">
-  <link href="../_css/nv.d3.min.css?v=10.1.2" rel="stylesheet" type="text/css">
-  <link href="../_css/style.css?v=10.1.2" rel="stylesheet" type="text/css">
-  <link href="../_css/custom.css" rel="stylesheet" type="text/css">
+  <link href="../../_css/bootstrap.min.css?v=10.1.2" rel="stylesheet" type="text/css">
+  <link href="../../_css/nv.d3.min.css?v=10.1.2" rel="stylesheet" type="text/css">
+  <link href="../../_css/style.css?v=10.1.2" rel="stylesheet" type="text/css">
+  <link href="../../_css/custom.css" rel="stylesheet" type="text/css">
  </head>
  <body>
   <header>
@@ -16,8 +16,9 @@
      <div class="col-md-12">
       <nav aria-label="breadcrumb">
        <ol class="breadcrumb">
-         <li class="breadcrumb-item"><a href="../index.html">C:\git\website_api\app</a></li>
-         <li class="breadcrumb-item"><a href="index.html">Providers</a></li>
+         <li class="breadcrumb-item"><a href="../../index.html">C:\git\website_api\app</a></li>
+         <li class="breadcrumb-item"><a href="../index.html">Http</a></li>
+         <li class="breadcrumb-item"><a href="index.html">Requests</a></li>
          <li class="breadcrumb-item active">(Dashboard)</li>
 
        </ol>
@@ -58,8 +59,6 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="BroadcastServiceProvider.php.html#8">App\Providers\BroadcastServiceProvider</a></td><td class="text-right">0%</td></tr>
-       <tr><td><a href="ResponseServiceProvider.php.html#8">App\Providers\ResponseServiceProvider</a></td><td class="text-right">37%</td></tr>
 
        </tbody>
       </table>
@@ -113,8 +112,6 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="BroadcastServiceProvider.php.html#13"><abbr title="App\Providers\BroadcastServiceProvider::boot">boot</abbr></a></td><td class="text-right">0%</td></tr>
-       <tr><td><a href="ResponseServiceProvider.php.html#15"><abbr title="App\Providers\ResponseServiceProvider::boot">boot</abbr></a></td><td class="text-right">28%</td></tr>
 
        </tbody>
       </table>
@@ -144,9 +141,9 @@
     </p>
    </footer>
   </div>
-  <script src="../_js/jquery.min.js?v=10.1.2" type="text/javascript"></script>
-  <script src="../_js/d3.min.js?v=10.1.2" type="text/javascript"></script>
-  <script src="../_js/nv.d3.min.js?v=10.1.2" type="text/javascript"></script>
+  <script src="../../_js/jquery.min.js?v=10.1.2" type="text/javascript"></script>
+  <script src="../../_js/d3.min.js?v=10.1.2" type="text/javascript"></script>
+  <script src="../../_js/nv.d3.min.js?v=10.1.2" type="text/javascript"></script>
   <script type="text/javascript">
 $(document).ready(function() {
   nv.addGraph(function() {
@@ -159,7 +156,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#classCoverageDistribution svg')
-      .datum(getCoverageDistributionData([1,0,0,0,1,0,0,0,0,0,0,4], "Class Coverage"))
+      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,0,0,0,0,2], "Class Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -177,7 +174,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#methodCoverageDistribution svg')
-      .datum(getCoverageDistributionData([1,0,0,1,0,0,0,0,0,0,0,7], "Method Coverage"))
+      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,0,0,0,0,4], "Method Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -227,7 +224,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[100,2,"<a href=\"AppServiceProvider.php.html#7\">App\\Providers\\AppServiceProvider<\/a>"],[100,1,"<a href=\"AuthServiceProvider.php.html#8\">App\\Providers\\AuthServiceProvider<\/a>"],[0,1,"<a href=\"BroadcastServiceProvider.php.html#8\">App\\Providers\\BroadcastServiceProvider<\/a>"],[100,2,"<a href=\"EventServiceProvider.php.html#10\">App\\Providers\\EventServiceProvider<\/a>"],[37.5,2,"<a href=\"ResponseServiceProvider.php.html#8\">App\\Providers\\ResponseServiceProvider<\/a>"],[100,2,"<a href=\"RouteServiceProvider.php.html#11\">App\\Providers\\RouteServiceProvider<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[100,2,"<a href=\"Company\/CompanyPostRequest.php.html#7\">App\\Http\\Requests\\Company\\CompanyPostRequest<\/a>"],[100,2,"<a href=\"Company\/CompanyPutRequest.php.html#7\">App\\Http\\Requests\\Company\\CompanyPutRequest<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);
@@ -251,7 +248,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Method Complexity');
 
     d3.select('#methodComplexity svg')
-      .datum(getComplexityData([[100,1,"<a href=\"AppServiceProvider.php.html#12\">App\\Providers\\AppServiceProvider::register<\/a>"],[100,1,"<a href=\"AppServiceProvider.php.html#20\">App\\Providers\\AppServiceProvider::boot<\/a>"],[100,1,"<a href=\"AuthServiceProvider.php.html#22\">App\\Providers\\AuthServiceProvider::boot<\/a>"],[0,1,"<a href=\"BroadcastServiceProvider.php.html#13\">App\\Providers\\BroadcastServiceProvider::boot<\/a>"],[100,1,"<a href=\"EventServiceProvider.php.html#26\">App\\Providers\\EventServiceProvider::boot<\/a>"],[100,1,"<a href=\"EventServiceProvider.php.html#34\">App\\Providers\\EventServiceProvider::shouldDiscoverEvents<\/a>"],[28.57142857142857,1,"<a href=\"ResponseServiceProvider.php.html#15\">App\\Providers\\ResponseServiceProvider::boot<\/a>"],[100,1,"<a href=\"ResponseServiceProvider.php.html#32\">App\\Providers\\ResponseServiceProvider::register<\/a>"],[100,2,"<a href=\"RouteServiceProvider.php.html#25\">App\\Providers\\RouteServiceProvider::boot<\/a>"]], 'Method Complexity'))
+      .datum(getComplexityData([[100,1,"<a href=\"Company\/CompanyPostRequest.php.html#12\">App\\Http\\Requests\\Company\\CompanyPostRequest::authorize<\/a>"],[100,1,"<a href=\"Company\/CompanyPostRequest.php.html#22\">App\\Http\\Requests\\Company\\CompanyPostRequest::rules<\/a>"],[100,1,"<a href=\"Company\/CompanyPutRequest.php.html#12\">App\\Http\\Requests\\Company\\CompanyPutRequest::authorize<\/a>"],[100,1,"<a href=\"Company\/CompanyPutRequest.php.html#22\">App\\Http\\Requests\\Company\\CompanyPutRequest::rules<\/a>"]], 'Method Complexity'))
       .transition()
       .duration(500)
       .call(chart);
