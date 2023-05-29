@@ -26,10 +26,18 @@ class CompanyTest extends TestCase
 
   public function testShowOneReturnsOneCompanyById(): void 
   {
-    $this->get('api/v1/companies/2')
+    $company = Company::create([
+      'companyName' => $this->faker->name,
+      'companyAddr' => $this->faker->address
+    ]);
+    
+    $this->get("api/v1/companies/$company->id")
       ->assertStatus(Response::HTTP_OK)
-      ->assertJsonStructure([
-        'id', 'companyName', 'companyAddr', 'active', 'created_at', 'updated_at', 'deleted_at'
+      ->assertJsonFragment([
+        'id' => $company->id,
+        'companyName' => $company->companyName,
+        'companyAddr' => $company->companyAddr,
+        'active' => 1
       ]);
   }
 
