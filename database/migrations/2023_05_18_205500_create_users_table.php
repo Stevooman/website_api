@@ -11,7 +11,7 @@ return new class extends Migration {
 	public function up(): void
 	{
 		Schema::create('users', function (Blueprint $table) {
-			$table->smallIncrements('userId')->autoIncrement();
+			$table->smallIncrements('id')->autoIncrement();
 			$table->string('firstName', 20)->default('');
 			$table->string('lastName', 25)->default('');
 			$table->string('emallAddr', 30)->default('');
@@ -19,6 +19,7 @@ return new class extends Migration {
 			$table->string('password', 60)->default('');
 			$table->timestamp('created_at')->useCurrent();
 			$table->timestamp('updated_at')->nullable()->default(DB::raw('NULL ON UPDATE CURRENT_TIMESTAMP'));
+			$table->softDeletes();
     });
 	}
 

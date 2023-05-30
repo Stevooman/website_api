@@ -11,13 +11,14 @@ return new class extends Migration {
 	public function up(): void
 	{
 		Schema::create('legend_of_zelda', function (Blueprint $table) {
-			$table->tinyIncrements('zGameId')->autoIncrement();
+			$table->tinyIncrements('id')->autoIncrement();
 			$table->tinyInteger('systemId')->default(0)->unsigned();
 			$table->string('title', 40)->default('');
 			$table->timestamp('created_at')->useCurrent();
 			$table->timestamp('updated_at')->nullable()->default(DB::raw('NULL ON UPDATE CURRENT_TIMESTAMP'));
+			$table->softDeletes();
 
-			$table->foreign('systemId')->references('systemId')->on('systems')->onDelete('cascade');
+			$table->foreign('systemId')->references('id')->on('systems')->onDelete('cascade');
 		});
 	}
 

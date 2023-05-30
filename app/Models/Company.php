@@ -4,24 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
 class Company extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
   /**
    * The primary key associated with the table.
    *
    * @var string
    */
-  protected $primaryKey = 'companyId';
+  protected $primaryKey = 'id';
 
-  protected $fillable = ['companyName', 'companyAddr', 'active'];
-
-  public static function show(Request $request) {
-    $companyId = $request->id;
-
-    
-  }
+  protected $fillable = ['companyName', 'companyAddr'];
+  
 }

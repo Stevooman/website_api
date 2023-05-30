@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(CompaniesController::class)->group(function () {
   Route::get('companies', 'index')->name('companies.index');
   Route::get('companies/{companyId}', 'showOne')->name('companies.showOne');
+  Route::get('activeCompanies', 'showAllActive')->name('companies.showAllActive');
   Route::post('companies', 'create')->name('companies.create');
   Route::put('companies/{companyId}', 'update')->name('companies.update');
+  Route::delete('companies/{companyId}', 'delete')->name('companies.delete');
 });

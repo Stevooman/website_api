@@ -11,14 +11,15 @@ return new class extends Migration {
 	public function up(): void
 	{
 		Schema::create('zelda_users', function (Blueprint $table) {
-			$table->smallIncrements('zUserId')->autoIncrement();
+			$table->smallIncrements('id')->autoIncrement();
 			$table->smallInteger('userId')->default(0)->unsigned();
 			$table->tinyInteger('zGameId')->default(0)->unsigned();
 			$table->timestamp('created_at')->useCurrent();
 			$table->timestamp('updated_at')->nullable()->default(DB::raw('NULL ON UPDATE CURRENT_TIMESTAMP'));
+			$table->softDeletes();
 
-			$table->foreign('userId')->references('userId')->on('users')->onDelete('cascade');
-			$table->foreign('zGameId')->references('zGameId')->on('legend_of_zelda')->onDelete('cascade');
+			$table->foreign('userId')->references('id')->on('users')->onDelete('cascade');
+			$table->foreign('zGameId')->references('id')->on('legend_of_zelda')->onDelete('cascade');
 		});
 	}
 
