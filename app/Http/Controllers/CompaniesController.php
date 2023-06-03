@@ -42,14 +42,7 @@ class CompaniesController extends Controller
 
   public function update(CompanyPutRequest $request) 
   {
-    $companyId = $request->companyId;
-
-    try {
-      $updated = Company::whereId($companyId)->update($request->all());
-
-    } catch (QueryException $e) {
-      throw new \Exception($e->getMessage());
-    }
+    $updated = Company::updateCompanyInfo($request);
 
     return response()->json(['updated' => $updated], 200);
   }
@@ -57,14 +50,7 @@ class CompaniesController extends Controller
 
   public function delete(Request $request) 
   {
-    $companyId = $request->companyId;
-
-    try {
-      $deleted = Company::whereId($companyId)->delete();
-      
-    } catch (QueryException $e) {
-      throw new \Exception($e->getMessage());
-    }
+    $deleted = Company::deleteCompanyInfo($request);
 
     return response()->json(['deleted' => $deleted], 200);
   }
