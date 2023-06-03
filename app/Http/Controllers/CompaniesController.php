@@ -17,34 +17,31 @@ class CompaniesController extends Controller
   }
 
 
-  public function showOne(Request $request) {
+  public function showOne(Request $request) 
+  {
     
     $company = Company::find($request->companyId);
     return response()->json($company);
   }
 
 
-  public function showAllActive() {
+  public function showAllActive() 
+  {
     $companies = Company::where('active', 1)->get();
     return response()->json($companies);
   }
 
 
-  public function create(CompanyPostRequest $request) {
+  public function create(CompanyPostRequest $request) 
+  {
+    Company::insertCompanyInfo($request);
 
-    try {
-      Company::insert($request->all());
-
-    } catch (QueryException $e) {
-      throw new \Exception($e->getMessage());
-    }
-    
     return response()->json(['status' => 'success'], 201);
   }
 
 
-  public function update(CompanyPutRequest $request) {
-
+  public function update(CompanyPutRequest $request) 
+  {
     $companyId = $request->companyId;
 
     try {
@@ -58,7 +55,8 @@ class CompaniesController extends Controller
   }
 
 
-  public function delete(Request $request) {
+  public function delete(Request $request) 
+  {
     $companyId = $request->companyId;
 
     try {
