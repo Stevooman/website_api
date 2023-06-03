@@ -27,7 +27,7 @@ class CompaniesController extends Controller
 
   public function showAllActive() 
   {
-    $companies = Company::where('active', 1)->get();
+    $companies = Company::where(Company::COL_ACTIVE, 1)->get();
     return response()->json($companies);
   }
 

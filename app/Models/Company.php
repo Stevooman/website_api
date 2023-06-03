@@ -14,6 +14,11 @@ class Company extends Model
 {
     use HasFactory, SoftDeletes;
 
+    const TABLE_NAME = 'companies';
+    const COL_NAME = 'companyName';
+    const COL_ADDR = 'companyAddr';
+    const COL_ACTIVE = 'active';
+
   /**
    * The primary key associated with the table.
    *
