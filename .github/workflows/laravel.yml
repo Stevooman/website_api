@@ -33,7 +33,7 @@ jobs:
         mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uuser -psecret -e "SHOW DATABASES"
 
     - name: Copy .env
-      run: php -r "file_exists('.env.example') || copy('.env.github', '.env');"
+      run: php -r "file_exists('.env') || copy('.env.github', '.env');"
 
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
