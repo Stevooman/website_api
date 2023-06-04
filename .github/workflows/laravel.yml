@@ -50,7 +50,7 @@ jobs:
         DB_USERNAME: user
         DB_PASSWORD: secret
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
-      run: vendor\bin\phpunit --coverage-xml tests/coverage/coverage.xml
+      run: php artisan test --coverage-xml tests/coverage/coverage.xml
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
