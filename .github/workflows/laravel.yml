@@ -51,7 +51,7 @@ jobs:
         DB_PASSWORD: secret
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
         XDEBUG_MODE: coverage
-      run: php artisan test --coverage-clover --coverage-xml tests/coverage/coverage.xml
+      run: php artisan test --coverage-clover coverage.xml
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
