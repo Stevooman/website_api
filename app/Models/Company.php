@@ -21,13 +21,6 @@ class Company extends Model
     const COL_ADDR = 'companyAddr';
     const COL_ACTIVE = 'active';
 
-  /**
-   * The primary key associated with the table.
-   *
-   * @var string
-   */
-  protected $primaryKey = 'id';
-
   protected $fillable = ['companyName', 'companyAddr'];
   
 
