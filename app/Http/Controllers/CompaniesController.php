@@ -17,56 +17,40 @@ class CompaniesController extends Controller
   }
 
 
-  public function showOne(Request $request) {
+  public function showOne(Request $request) 
+  {
     
     $company = Company::find($request->companyId);
     return response()->json($company);
   }
 
 
-  public function showAllActive() {
-    $companies = Company::where('active', 1)->get();
+  public function showAllActive() 
+  {
+    $companies = Company::where(Company::COL_ACTIVE, 1)->get();
     return response()->json($companies);
   }
 
 
-  public function create(CompanyPostRequest $request) {
+  public function create(CompanyPostRequest $request) 
+  {
+    Company::insertCompanyInfo($request);
 
-    try {
-      Company::insert($request->all());
-
-    } catch (QueryException $e) {
-      throw new \Exception($e->getMessage());
-    }
-    
     return response()->json(['status' => 'success'], 201);
   }
 
 
-  public function update(CompanyPutRequest $request) {
-
-    $companyId = $request->companyId;
-
-    try {
-      $updated = Company::whereId($companyId)->update($request->all());
-
-    } catch (QueryException $e) {
-      throw new \Exception($e->getMessage());
-    }
+  public function update(CompanyPutRequest $request) 
+  {
+    $updated = Company::updateCompanyInfo($request);
 
     return response()->json(['updated' => $updated], 200);
   }
 
 
-  public function delete(Request $request) {
-    $companyId = $request->companyId;
-
-    try {
-      $deleted = Company::whereId($companyId)->delete();
-      
-    } catch (QueryException $e) {
-      throw new \Exception($e->getMessage());
-    }
+  public function delete(Request $request) 
+  {
+    $deleted = Company::deleteCompanyInfo($request);
 
     return response()->json(['deleted' => $deleted], 200);
   }
