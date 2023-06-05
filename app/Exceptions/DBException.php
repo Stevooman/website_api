@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Log;
 
 class DBException extends Exception
 {
+  /**
+   * Throw error when a database query fails.
+   *
+   * @param QueryException $e Object 'catch'ed when exception occurs. Contains details to be used
+   * for the displayed error message.
+   */
   public function __construct(QueryException $e)
   {
     $exceptionMsg = $e->getMessage() . ' on line ' . $e->getLine() . ' in file: ' . $e->getFile();
