@@ -27,12 +27,7 @@ class Company extends Model
 
   public static function insertCompanyInfo(CompanyPostRequest $request) 
   {
-    try {
-      $created = DB::table(self::TABLE_NAME)->insert($request->all());
-
-    } catch (QueryException $e) {
-      throw new DBException($e);
-    }
+    $created = Company::insert($request->all());
 
     return $created;
   }
@@ -43,12 +38,7 @@ class Company extends Model
   {
     $companyId = $request->companyId;
 
-    try {
-      $updated = Company::whereId($companyId)->update($request->all());
-
-    } catch (QueryException $e) {
-      throw new DBException($e);
-    }
+    $updated = Company::whereId($companyId)->update($request->all());
 
     return $updated;
   }
@@ -59,13 +49,8 @@ class Company extends Model
   {
     $companyId = $request->companyId;
 
-    try {
-      $deleted = Company::whereId($companyId)->delete();
-      
-    } catch (QueryException $e) {
-      throw new DBException($e);
-    }
-
+    $deleted = Company::whereId($companyId)->delete();
+    
     return $deleted;
   }
 }
