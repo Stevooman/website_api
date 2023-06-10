@@ -4,6 +4,9 @@ namespace App\Http\Requests\Company;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Validation rules for user input POST requests sent to the Companies API.
+ */
 class CompanyPostRequest extends FormRequest
 {
 	/**

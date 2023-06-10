@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Http\Requests\Company\CompanyPostRequest;
 use App\Http\Requests\Company\CompanyPutRequest;
 
+/**
+ * Handles user input and contains CRUD operations that include: Displaying all company records, all active companies, 
+ * a single company, as well as standard create, update, and delete operations.
+ */
 class CompaniesController extends Controller
 {
 
