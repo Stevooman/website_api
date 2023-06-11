@@ -1,13 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Company;
+namespace App\Http\Requests\System;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-/**
- * Validation rules for user input POST requests sent to the Companies API.
- */
-class CompanyPostRequest extends FormRequest
+class SystemPostRequest extends FormRequest
 {
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -25,9 +22,9 @@ class CompanyPostRequest extends FormRequest
 	public function rules(): array
 	{
 		return [
-			'companyName' => 'required|string|max:30',
-			'companyAddr' => 'required|string|max:100',
-			'active' => 'nullable|integer|min:0|max:1'
+			'name' => 'required|string|max:50',
+			'companyId' => 'required|integer',
+			'releaseDate' => 'required|date_format:Y-m-d'
 		];
 	}
 }
