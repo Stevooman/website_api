@@ -88,4 +88,84 @@ class SystemTest extends TestCase
 				]
 			]);
 	}
+
+
+
+  public function testSystemIsCreatedSuccessfully(): void 
+  {
+    $company = Company::create([
+				'companyName' => $this->faker->name,
+				'companyAddr' => $this->faker->address()
+			]);
+
+    $inputData = [
+      'name' => $this->faker->name,
+      'companyId' => $company->id,
+      'releaseDate' => $this->faker->date
+    ];
+
+    $this->post('api/v1/systems', $inputData)
+      ->assertStatus(Response::HTTP_CREATED)
+      ->assertExactJson([
+        'status' => 'success'
+      ]);
+  }
+
+
+
+  public function testSystemIsUpdatedSuccessfully(): void 
+  {
+    $company = Company::create([
+      'companyName' => $this->faker->name,
+      'companyAddr' => $this->faker->address
+    ]);
+
+    $system = System::create([
+      'name' => $this->faker->name,
+      'companyId' => $company->id,
+      'releaseDate' => $this->faker->date
+    ]);
+
+    $inputData = [
+      'name' => $this->faker->name,
+      'releaseDate' => $this->faker->date
+    ];
+
+    $this->put('api/v1/systems/' . $system->id, $inputData)
+      ->assertStatus(Response::HTTP_OK)
+      ->assertExactJson([
+        'updated' => 1
+      ]);
+
+    $this->assertDatabaseHas('systems', $inputData);
+  }
+
+
+
+  public function testSystemIsSoftDeletedSuccessfully(): void 
+  {
+    $company = Company::create([
+      'companyName' => $this->faker->name,
+      'companyAddr' => $this->faker->address
+    ]);
+
+    $system = System::create([
+      'name' => $this->faker->name,
+      'companyId' => $company->id,
+      'releaseDate' => $this->faker->date
+    ]);
+
+    $this->delete("api/v1/systems/$system->id")
+      ->assertStatus(Response::HTTP_OK)
+      ->assertExactJson([
+        'deleted' => 1
+      ]);
+
+    $this->assertSoftDeleted('systems', [
+      'id' => $system->id,
+      'name' => $system->name,
+      'companyId' => $system->companyId,
+      'releaseDate' => $system->releaseDate
+    ]);
+  }
 }
