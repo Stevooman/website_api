@@ -34,6 +34,7 @@ class SystemTest extends TestCase
 
 		$system = System::create([
 			'name' => $this->faker->name,
+      'companyId' => $company->id,
 			'releaseDate' => $this->faker->date('Y-m-d')
 		]);
 
@@ -52,17 +53,24 @@ class SystemTest extends TestCase
 
 	public function testShowDateRangeReturnsSystemsReleasedBetweenCertainDates(): void 
 	{
+    $companyIds = [];
+    $systemIds = [];
+    $systemNames = [];
+
 		for ($i = 0; $i < 10; $i++) {
 			$company = Company::create([
 				'companyName' => $this->faker->name,
 				'companyAddr' => $this->faker->address
 			]);
+      array_push($companyIds, $company->id);
 
 			$system = System::create([
 				'name' => $this->faker->name,
-				'companyId' => $company->id,
+				'companyId' => $companyIds[$i],
 				'releaseDate' => "201$i-06-05"
 			]);
+      array_push($systemIds, $system->id);
+      array_push($systemNames, $system->name);
 		}
 
 		$this->call('GET', 'api/v1/systemReleases', [
@@ -74,19 +82,33 @@ class SystemTest extends TestCase
 
 		$this->call('GET', 'api/v1/systemReleases', [
 			'startDate' => '2012-01-01',
-			'endDate' => '2014-01-01'
+			'endDate' => '2016-01-01'
 		])
-			->assertJsonFragment([
-				'*' => [
-					'id' => 3,
-					'companyId' => 3,
-					'releaseDate' => '2012-06-05'
+			->assertExactJson([
+				[
+					'id' => $systemIds[2],
+					'companyId' => $companyIds[2],
+					'releaseDate' => '2012-06-05',
+          'name' => $systemNames[2]
 				],
 				[
-					'id' => 4,
-					'companyId' => 4,
-					'releaseDate' => '2013-06-05'
-				]
+					'id' => $systemIds[3],
+					'companyId' => $companyIds[3],
+					'releaseDate' => '2013-06-05',
+          'name' => $systemNames[3]
+        ],
+        [
+          'id' => $systemIds[4],
+          'companyId' => $companyIds[4],
+          'releaseDate' => '2014-06-05',
+          'name' => $systemNames[4]
+        ],
+        [
+          'id' => $systemIds[5],
+          'companyId' => $companyIds[5],
+          'releaseDate' => '2015-06-05',
+          'name' => $systemNames[5]
+        ]
 			]);
 	}
 

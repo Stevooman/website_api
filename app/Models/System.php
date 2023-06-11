@@ -37,9 +37,9 @@ class System extends Model
 
 	public static function showDateRange(SystemGetDatesRequest $request)
 	{
-		$system = DB::table(self::TABLE_NAME)
-			->where('releaseDate', '>', $request->startDate)
-			->where('releaseDate', '<', $request->endDate)
+		$system = DB::table(self::TABLE_NAME)->select('id', 'companyId', 'releaseDate', 'name')
+			->where('releaseDate', '>=', $request->startDate)
+			->where('releaseDate', '<=', $request->endDate)
 			->get();
 
 		return $system;
@@ -63,7 +63,7 @@ class System extends Model
 
 
 
-	public function deleteSystemInfo(Request $request)
+	public static function deleteSystemInfo(Request $request)
 	{
 		$deleted = System::whereId($request->systemId)->delete();
 

@@ -54,7 +54,7 @@ class SystemsController extends Controller
 
 	public function delete(Request $request)
 	{
-		$deleted = System::deleteCompanyInfo($request);
+		$deleted = System::deleteSystemInfo($request);
 
 		return response()->json(['deleted' => $deleted], 200);
 	}

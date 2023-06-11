@@ -33,9 +33,9 @@ Route::controller(CompaniesController::class)->group(function () {
 // Systems
 Route::controller(SystemsController::class)->group(function () {
   Route::get('systems', 'index')->name('systems.index');
-  Route::get('systems/{id}', 'showOne')->name('systems.showOne');
+  Route::get('systems/{systemId}', 'showOne')->name('systems.showOne');
   Route::get('systemReleases', 'showDateRange')->name('systems.showDateRange');
   Route::post('systems', 'create')->name('systems.create');
-  Route::put('systems/{id}', 'update')->name('systems.update');
-  Route::delete('systems/{id}', 'delete')->name('systems.delete');
+  Route::put('systems/{systemId}', 'update')->name('systems.update');
+  Route::delete('systems/{systemId}', 'delete')->name('systems.delete');
 });

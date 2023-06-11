@@ -12,7 +12,7 @@ return new class extends Migration {
   {
     Schema::create('companies', function (Blueprint $table) {
       $table->tinyIncrements('id')->autoIncrement();
-      $table->string('companyName', 30)->default('');
+      $table->string('companyName', 50)->default('');
       $table->string('companyAddr', 100)->default('');
       $table->tinyInteger('active')->default(1);
       $table->timestamp('created_at')->useCurrent();
