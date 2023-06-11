@@ -2,12 +2,12 @@
 <html lang="en">
  <head>
   <meta charset="UTF-8">
-  <title>Dashboard for C:\git\website_api\app\Http\Controllers</title>
+  <title>Dashboard for C:\git\website_api\app\Http\Requests\System</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="../../_css/bootstrap.min.css?v=10.1.2" rel="stylesheet" type="text/css">
-  <link href="../../_css/nv.d3.min.css?v=10.1.2" rel="stylesheet" type="text/css">
-  <link href="../../_css/style.css?v=10.1.2" rel="stylesheet" type="text/css">
-  <link href="../../_css/custom.css" rel="stylesheet" type="text/css">
+  <link href="../../../_css/bootstrap.min.css?v=10.1.2" rel="stylesheet" type="text/css">
+  <link href="../../../_css/nv.d3.min.css?v=10.1.2" rel="stylesheet" type="text/css">
+  <link href="../../../_css/style.css?v=10.1.2" rel="stylesheet" type="text/css">
+  <link href="../../../_css/custom.css" rel="stylesheet" type="text/css">
  </head>
  <body>
   <header>
@@ -16,9 +16,10 @@
      <div class="col-md-12">
       <nav aria-label="breadcrumb">
        <ol class="breadcrumb">
-         <li class="breadcrumb-item"><a href="../../index.html">C:\git\website_api\app</a></li>
-         <li class="breadcrumb-item"><a href="../index.html">Http</a></li>
-         <li class="breadcrumb-item"><a href="index.html">Controllers</a></li>
+         <li class="breadcrumb-item"><a href="../../../index.html">C:\git\website_api\app</a></li>
+         <li class="breadcrumb-item"><a href="../../index.html">Http</a></li>
+         <li class="breadcrumb-item"><a href="../index.html">Requests</a></li>
+         <li class="breadcrumb-item"><a href="index.html">System</a></li>
          <li class="breadcrumb-item active">(Dashboard)</li>
 
        </ol>
@@ -141,9 +142,9 @@
     </p>
    </footer>
   </div>
-  <script src="../../_js/jquery.min.js?v=10.1.2" type="text/javascript"></script>
-  <script src="../../_js/d3.min.js?v=10.1.2" type="text/javascript"></script>
-  <script src="../../_js/nv.d3.min.js?v=10.1.2" type="text/javascript"></script>
+  <script src="../../../_js/jquery.min.js?v=10.1.2" type="text/javascript"></script>
+  <script src="../../../_js/d3.min.js?v=10.1.2" type="text/javascript"></script>
+  <script src="../../../_js/nv.d3.min.js?v=10.1.2" type="text/javascript"></script>
   <script type="text/javascript">
 $(document).ready(function() {
   nv.addGraph(function() {
@@ -174,7 +175,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#methodCoverageDistribution svg')
-      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,0,0,0,0,12], "Method Coverage"))
+      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,0,0,0,0,6], "Method Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -224,7 +225,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[100,6,"<a href=\"CompaniesController.php.html#14\">App\\Http\\Controllers\\CompaniesController<\/a>"],[100,0,"<a href=\"Controller.php.html#9\">App\\Http\\Controllers\\Controller<\/a>"],[100,6,"<a href=\"SystemsController.php.html#11\">App\\Http\\Controllers\\SystemsController<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[100,2,"<a href=\"SystemGetDatesRequest.php.html#7\">App\\Http\\Requests\\System\\SystemGetDatesRequest<\/a>"],[100,2,"<a href=\"SystemPostRequest.php.html#7\">App\\Http\\Requests\\System\\SystemPostRequest<\/a>"],[100,2,"<a href=\"SystemPutRequest.php.html#7\">App\\Http\\Requests\\System\\SystemPutRequest<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);
@@ -248,7 +249,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Method Complexity');
 
     d3.select('#methodComplexity svg')
-      .datum(getComplexityData([[100,1,"<a href=\"CompaniesController.php.html#17\">App\\Http\\Controllers\\CompaniesController::index<\/a>"],[100,1,"<a href=\"CompaniesController.php.html#23\">App\\Http\\Controllers\\CompaniesController::showOne<\/a>"],[100,1,"<a href=\"CompaniesController.php.html#31\">App\\Http\\Controllers\\CompaniesController::showAllActive<\/a>"],[100,1,"<a href=\"CompaniesController.php.html#38\">App\\Http\\Controllers\\CompaniesController::create<\/a>"],[100,1,"<a href=\"CompaniesController.php.html#46\">App\\Http\\Controllers\\CompaniesController::update<\/a>"],[100,1,"<a href=\"CompaniesController.php.html#54\">App\\Http\\Controllers\\CompaniesController::delete<\/a>"],[100,1,"<a href=\"SystemsController.php.html#13\">App\\Http\\Controllers\\SystemsController::index<\/a>"],[100,1,"<a href=\"SystemsController.php.html#21\">App\\Http\\Controllers\\SystemsController::showOne<\/a>"],[100,1,"<a href=\"SystemsController.php.html#29\">App\\Http\\Controllers\\SystemsController::showDateRange<\/a>"],[100,1,"<a href=\"SystemsController.php.html#37\">App\\Http\\Controllers\\SystemsController::create<\/a>"],[100,1,"<a href=\"SystemsController.php.html#46\">App\\Http\\Controllers\\SystemsController::update<\/a>"],[100,1,"<a href=\"SystemsController.php.html#55\">App\\Http\\Controllers\\SystemsController::delete<\/a>"]], 'Method Complexity'))
+      .datum(getComplexityData([[100,1,"<a href=\"SystemGetDatesRequest.php.html#12\">App\\Http\\Requests\\System\\SystemGetDatesRequest::authorize<\/a>"],[100,1,"<a href=\"SystemGetDatesRequest.php.html#22\">App\\Http\\Requests\\System\\SystemGetDatesRequest::rules<\/a>"],[100,1,"<a href=\"SystemPostRequest.php.html#12\">App\\Http\\Requests\\System\\SystemPostRequest::authorize<\/a>"],[100,1,"<a href=\"SystemPostRequest.php.html#22\">App\\Http\\Requests\\System\\SystemPostRequest::rules<\/a>"],[100,1,"<a href=\"SystemPutRequest.php.html#12\">App\\Http\\Requests\\System\\SystemPutRequest::authorize<\/a>"],[100,1,"<a href=\"SystemPutRequest.php.html#22\">App\\Http\\Requests\\System\\SystemPutRequest::rules<\/a>"]], 'Method Complexity'))
       .transition()
       .duration(500)
       .call(chart);
