@@ -17,7 +17,8 @@ class SystemTest extends TestCase
 			->assertStatus(Response::HTTP_OK)
 			->assertJsonStructure([
 				'*' => [
-					'id', 'name', 'companyId', 'releaseDate'
+					'id', 'name', 'companyId', 'releaseDate', 'created_at',
+          'updated_at', 'deleted_at'
 				]
 			]);
 	}
