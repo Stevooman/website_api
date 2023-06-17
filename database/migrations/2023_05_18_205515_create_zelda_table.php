@@ -4,6 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Creates a table that references Legend of Zelda game titles. Each 
+ * record is connected to its parent system by the system ID. Soft 
+ * deletes are enabled.
+ */
 return new class extends Migration {
 	/**
 	 * Run the migrations.
