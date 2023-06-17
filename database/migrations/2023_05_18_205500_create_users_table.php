@@ -4,6 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Creates a users table in the database. This table contains basic information fields, 
+ * such as first and last name, email address, and a username/password. Password is 
+ * encrypted before being added to the database. Soft deletes are also enabled.
+ */
 return new class extends Migration {
 	/**
 	 * Run the migrations.

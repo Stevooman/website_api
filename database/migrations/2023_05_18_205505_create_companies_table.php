@@ -4,6 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Creates a companies table in the database. This table holds a company name, 
+ * address, and active status (active or not active). Soft deletes are also 
+ * enabled.
+ */
 return new class extends Migration {
   /**
    * Run the migrations.

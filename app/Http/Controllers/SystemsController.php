@@ -8,8 +8,18 @@ use App\Http\Requests\System\SystemPostRequest;
 use Illuminate\Http\Request;
 use App\Models\System;
 
+/**
+ * Handles client input and displays database data as JSON objects. Contains CRUD 
+ * operations that should all systems, one based on an ID, all systems released 
+ * within a date range, and create, update, delete endpoints.
+ */
 class SystemsController extends Controller
 {
+  /**
+   * Shows all systems records.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
 	public function index() 
 	{
 		$systems = System::all();
@@ -17,7 +27,12 @@ class SystemsController extends Controller
 	}
 
 
-
+  /**
+   * Show one system data based on an ID
+   *
+   * @param Request $request An HTTP request object
+   * @return \Illuminate\Http\JsonResponse
+   */
 	public function showOne(Request $request)
 	{
 		$system = System::showOne($request);
@@ -25,7 +40,13 @@ class SystemsController extends Controller
 	}
 
 
-
+  /**
+   * Shows all systems released between a given date range.
+   *
+   * @param SystemGetDatesRequest $request A request object that contains
+   * the input validation rules.
+   * @return \Illuminate\Http\JsonResponse
+   */
 	public function showDateRange(SystemGetDatesRequest $request)
 	{
 		$systems = System::showDateRange($request);
@@ -33,7 +54,13 @@ class SystemsController extends Controller
 	}
 
 
-
+  /**
+   * Adds a new system record to the database.
+   *
+   * @param SystemPostRequest $request An HTTP request object that contains 
+   * input validation rules.
+   * @return \Illuminate\Http\JsonResponse
+   */
 	public function create(SystemPostRequest $request)
 	{
 		System::insertSystemInfo($request);
@@ -42,7 +69,13 @@ class SystemsController extends Controller
 	}
 
 
-
+  /**
+   * Updates an existing systems record.
+   *
+   * @param SystemPutRequest $request An HTTP request object that contains 
+   * the input validation rules.
+   * @return \Illuminate\Http\JsonResponse
+   */
 	public function update(SystemPutRequest $request)
 	{
 		$updated = System::updateSystemInfo($request);
@@ -51,7 +84,12 @@ class SystemsController extends Controller
 	}
 
 
-
+  /**
+   * Soft deletes one systems record in the database.
+   *
+   * @param Request $request An HTTP request object.
+   * @return \Illuminate\Http\JsonResponse
+   */
 	public function delete(Request $request)
 	{
 		$deleted = System::deleteSystemInfo($request);

@@ -4,6 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Creates a Zelda users table that references users to certain 
+ * Zelda games that they have played or are currently playing. 
+ * Soft deletes are enabled.
+ */
 return new class extends Migration {
 	/**
 	 * Run the migrations.

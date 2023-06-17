@@ -11,6 +11,11 @@ use Tests\TestCase;
 
 class SystemTest extends TestCase
 {
+  /**
+   * Tests the index function to see if it returns all data from systems.
+   *
+   * @return void
+   */
 	public function testIndexReturnsAllSystems(): void 
 	{
 		$this->get('api/v1/systems')
@@ -24,7 +29,12 @@ class SystemTest extends TestCase
 	}
 
 
-
+  /**
+   * Tests the showOne function to see if it returns correct data for 
+   * a given system ID number.
+   *
+   * @return void
+   */
 	public function testShowOneReturnsOneSystemByIdAndItsCompanyInfo(): void 
 	{
 		$company = Company::create([
@@ -50,7 +60,13 @@ class SystemTest extends TestCase
 	}
 
 
-
+  /**
+   * Tests the showDateRange function to see if it returns the 
+   * correct number of JSON objects for a given date range
+   * as well as the correct exact JSON data for another date range.
+   *
+   * @return void
+   */
 	public function testShowDateRangeReturnsSystemsReleasedBetweenCertainDates(): void 
 	{
     $companyIds = [];
@@ -79,6 +95,8 @@ class SystemTest extends TestCase
 		])
 		->assertStatus(Response::HTTP_OK)
 		->assertJsonCount(2);
+
+
 
 		$this->call('GET', 'api/v1/systemReleases', [
 			'startDate' => '2012-01-01',
@@ -113,7 +131,12 @@ class SystemTest extends TestCase
 	}
 
 
-
+  /**
+   * Tests the create function to see if a system record is
+   * created successfully.
+   *
+   * @return void
+   */
   public function testSystemIsCreatedSuccessfully(): void 
   {
     $company = Company::create([
@@ -135,7 +158,12 @@ class SystemTest extends TestCase
   }
 
 
-
+  /**
+   * Tests the update function to see if the record with the given
+   * ID in the path is updated successfully.
+   *
+   * @return void
+   */
   public function testSystemIsUpdatedSuccessfully(): void 
   {
     $company = Company::create([
@@ -164,7 +192,12 @@ class SystemTest extends TestCase
   }
 
 
-
+  /**
+   * Tests if the delete function successfully soft deletes a record
+   * based on a given ID in the path.
+   *
+   * @return void
+   */
   public function testSystemIsSoftDeletedSuccessfully(): void 
   {
     $company = Company::create([
