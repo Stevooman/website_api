@@ -21,7 +21,7 @@ return new class extends Migration {
 			$table->string('lastName', 25)->default('');
 			$table->string('emallAddr', 30)->default('');
 			$table->string('userName', 20)->default('');
-			$table->string('password', 60)->default('');
+			$table->string('password', 255)->default('');
 			$table->timestamp('created_at')->useCurrent();
 			$table->timestamp('updated_at')->nullable()->default(DB::raw('NULL ON UPDATE CURRENT_TIMESTAMP'));
 			$table->softDeletes();
