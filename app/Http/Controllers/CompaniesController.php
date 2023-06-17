@@ -13,13 +13,23 @@ use App\Http\Requests\Company\CompanyPutRequest;
  */
 class CompaniesController extends Controller
 {
-
+  /**
+   * Shows all company records.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
   public function index() {
     $data = Company::all();
     return response()->json($data);
   }
 
 
+  /**
+   * Shows one company data based on an ID.
+   *
+   * @param Request $request
+   * @return \Illuminate\Http\JsonResponse
+   */
   public function showOne(Request $request) 
   {
     
@@ -28,6 +38,11 @@ class CompaniesController extends Controller
   }
 
 
+  /**
+   * Shows all companies that are currently active.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
   public function showAllActive() 
   {
     $companies = Company::where(Company::COL_ACTIVE, 1)->get();
@@ -35,6 +50,13 @@ class CompaniesController extends Controller
   }
 
 
+  /**
+   * Adds a new companies record to the database.
+   *
+   * @param CompanyPostRequest $request An HTTP request object that contains
+   * input validation rules.
+   * @return \Illuminate\Http\JsonResponse
+   */
   public function create(CompanyPostRequest $request) 
   {
     Company::insertCompanyInfo($request);
@@ -43,6 +65,12 @@ class CompaniesController extends Controller
   }
 
 
+  /**
+   * Updates a companies record in the database.
+   *
+   * @param CompanyPutRequest $request An HTTP request object that contains input validation rules.
+   * @return \Illuminate\Http\JsonResponse
+   */
   public function update(CompanyPutRequest $request) 
   {
     $updated = Company::updateCompanyInfo($request);
@@ -51,6 +79,12 @@ class CompaniesController extends Controller
   }
 
 
+  /**
+   * Soft deletes a companies record from the database.
+   *
+   * @param Request $request An HTTP request object.
+   * @return \Illuminate\Http\JsonResponse
+   */
   public function delete(Request $request) 
   {
     $deleted = Company::deleteCompanyInfo($request);
