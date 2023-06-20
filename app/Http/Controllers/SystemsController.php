@@ -10,7 +10,7 @@ use App\Models\System;
 
 /**
  * Handles client input and displays database data as JSON objects. Contains CRUD 
- * operations that should all systems, one based on an ID, all systems released 
+ * operations that show all systems, one based on an ID, all systems released 
  * within a date range, and create, update, delete endpoints.
  */
 class SystemsController extends Controller
