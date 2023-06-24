@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use app\Models\User;
-use app\Http\Requests\User\UserPostRequest;
-use app\Http\Requests\User\UserPutRequest;
+use App\Models\User;
+use App\Http\Requests\User\UserPostRequest;
+use App\Http\Requests\User\UserPutRequest;
 
 class UsersController extends Controller
 {
@@ -45,7 +45,7 @@ class UsersController extends Controller
 	 */
 	public function create(UserPostRequest $request)
 	{
-		User::insertSystemInfo($request);
+		User::insertUserInfo($request);
 
 		return response()->json(['status' => 'success'], 201);
 	}
