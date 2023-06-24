@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\SystemsController;
+use App\Http\Controllers\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,4 +39,13 @@ Route::controller(SystemsController::class)->group(function () {
   Route::post('systems', 'create')->name('systems.create');
   Route::put('systems/{systemId}', 'update')->name('systems.update');
   Route::delete('systems/{systemId}', 'delete')->name('systems.delete');
+});
+
+// Users
+Route::controller(UsersController::class)->group(function () {
+  Route::get('users', 'index')->name('users.index');
+  Route::get('users/{userId}', 'showOne')->name('users.showOne');
+  Route::post('users', 'create')->name('users.create');
+  Route::put('users/{userId}', 'update')->name('users.update');
+  Route::delete('users/{userId}', 'delete')->name('users.delete');
 });
