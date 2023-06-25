@@ -19,7 +19,7 @@ return new class extends Migration {
 			$table->smallIncrements('id')->autoIncrement();
 			$table->string('firstName', 20)->default('');
 			$table->string('lastName', 25)->default('');
-			$table->string('emallAddr', 30)->default('');
+			$table->string('emailAddr', 30)->default('');
 			$table->string('userName', 20)->default('');
 			$table->string('password', 255)->default('');
       $table->timestamp('email_verified_at')->nullable();

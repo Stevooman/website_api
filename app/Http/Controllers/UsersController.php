@@ -30,7 +30,7 @@ class UsersController extends Controller
 	 */
 	public function showOne(Request $request)
 	{
-		$user = User::showOne($request);
+		$user = User::showOne($request->userId);
 		return response()->json($user);
 	}
 

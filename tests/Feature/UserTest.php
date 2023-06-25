@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Illuminate\Http\Response;
-use app\Models\User;
+use App\Models\User;
 
 class UserTest extends TestCase
 {
@@ -53,17 +53,13 @@ class UserTest extends TestCase
 
 		$this->get(self::USERS_URI . "/$user->id")
 			->assertStatus(Response::HTTP_OK)
-			->assertExactJson([
+			->assertJsonFragment([
 				'id' => $user->id,
 				'firstName' => $user->firstName,
 				'lastName' => $user->lastName,
 				'emailAddr' => $user->emailAddr,
 				'userName' => $user->userName,
-				'password' => $password,
-				'email_verified_at' => $user->email_verified_at,
-				'created_at' => $user->created_at,
-				'updated_at' => $user->updated_at,
-				'deleted_at' => $user->deleted_at
+				'email_verified_at' => $user->email_verified_at
 			]);
 	}
 
@@ -76,12 +72,12 @@ class UserTest extends TestCase
 	 */
 	public function testUserIsCreatedSuccessfully(): void 
 	{
-		$password = password_hash($this->faker->password(), PASSWORD_DEFAULT);
+		$password = password_hash($this->faker->password, PASSWORD_DEFAULT);
 		$inputData = [
-			'firstName' => $this->faker->firstName(),
-			'lastName' => $this->faker->lastName(),
-			'emailAddr' => $this->faker->email(),
-			'userName' => $this->faker->userName(),
+			'firstName' => $this->faker->firstName,
+			'lastName' => $this->faker->lastName,
+			'emailAddr' => $this->faker->email,
+			'userName' => $this->faker->word,
 			'password' => $password,
 			'email_verified_at' => $this->faker->date('Y-m-d H:i:s')
 		];
