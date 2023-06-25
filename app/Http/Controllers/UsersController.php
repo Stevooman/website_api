@@ -61,7 +61,7 @@ class UsersController extends Controller
 	 */
 	public function update(UserPutRequest $request)
 	{
-		$updated = User::updateSystemInfo($request);
+		$updated = User::updateUserInfo($request);
 
 		return response()->json(['updated' => $updated], 200);
 	}

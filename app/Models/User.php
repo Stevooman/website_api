@@ -40,9 +40,30 @@ class User extends Authenticatable
 
 
 
+  public static function showOne(int $userId) 
+  {
+    $user = DB::table('users')->select('id', 'firstName', 'lastName', 
+      'emailAddr', 'userName', 'email_verified_at', 'created_at', 
+      'updated_at', 'deleted_at')
+      ->where('id', $userId)
+      ->get();
+
+      return $user;
+  }
+
+
+
   public static function insertUserInfo(UserPostRequest $request) 
   {
     $created = User::insert($request->all());
     return $created;
+  }
+
+
+
+  public static function updateUserInfo(UserPutRequest $request) 
+  {
+    $updated = User::whereId($request->userId)->update($request->all());
+    return $updated;
   }
 }
