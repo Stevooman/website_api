@@ -53,18 +53,50 @@ class UsersController extends Controller
 
 
 	/**
-	 * Updates an existing user record.
+	 * Updates an existing user's password.
 	 *
 	 * @param UserPutRequest $request An HTTP request object that contains 
 	 * the input validation rules.
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-	public function update(UserPutRequest $request)
+	public function updatePassword(UserPutRequest $request)
 	{
-		$updated = User::updateUserInfo($request);
+		$updated = User::updatePassword($request);
 
 		return response()->json(['updated' => $updated], 200);
 	}
+
+
+
+  /**
+   * Updates an existing user's email.
+   *
+   * @param UserPutRequest $request An HTTP request object that contains 
+   * the input validation rules.
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function updateEmail(UserPutRequest $request)
+  {
+    $updated = User::updateEmail($request);
+
+    return response()->json(['updated' => $updated], 200);
+  }
+
+
+
+  /**
+   * Updates an existing user's username.
+   *
+   * @param UserPutRequest $request An HTTP request object that contains 
+   * the input validation rules.
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function updateUsername(UserPutRequest $request)
+  {
+    $updated = User::updateUsername($request);
+
+    return response()->json(['updated' => $updated], 200);
+  }
 
 
 
@@ -76,7 +108,7 @@ class UsersController extends Controller
 	 */
 	public function delete(Request $request)
 	{
-		$deleted = User::deleteSystemInfo($request);
+		$deleted = User::deleteSystemInfo($request->userId);
 
 		return response()->json(['deleted' => $deleted], 200);
 	}

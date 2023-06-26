@@ -10,12 +10,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
 	use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+
+  private const COL_FIRSTNAME = 'firstName';
+  private const COL_LASTNAME = 'lastName';
+  private const COL_EMAIL = 'emailAddr';
+  private const COL_USERNAME = 'userName';
+  private const COL_PASSWORD = 'password';
+  private const COL_VERIFY_EMAIL = 'email_verified_at';
+
 
 	/**
 	 * The attributes that are mass assignable.
@@ -23,10 +30,10 @@ class User extends Authenticatable
 	 * @var array<int, string>
 	 */
 	protected $fillable = [
-		'firstName',
-		'lastName',
-		'emailAddr',
-		'userName'
+		self::COL_FIRSTNAME,
+		self::COL_LASTNAME,
+		self::COL_EMAIL,
+		self::COL_USERNAME
 	];
 
 	/**
@@ -35,15 +42,15 @@ class User extends Authenticatable
 	 * @var array<int, string>
 	 */
 	protected $hidden = [
-		'password'
+		self::COL_PASSWORD
 	];
 
 
 
   public static function showOne(int $userId) 
   {
-    $user = DB::table('users')->select('id', 'firstName', 'lastName', 
-      'emailAddr', 'userName', 'email_verified_at', 'created_at', 
+    $user = DB::table('users')->select('id', self::COL_FIRSTNAME, self::COL_LASTNAME, 
+      self::COL_EMAIL, self::COL_USERNAME, self::COL_VERIFY_EMAIL, 'created_at', 
       'updated_at', 'deleted_at')
       ->where('id', $userId)
       ->get();
@@ -55,15 +62,57 @@ class User extends Authenticatable
 
   public static function insertUserInfo(UserPostRequest $request) 
   {
+    $request['password'] = password_hash($request['password'], PASSWORD_DEFAULT);
     $created = User::insert($request->all());
     return $created;
   }
 
 
 
-  public static function updateUserInfo(UserPutRequest $request) 
+  public static function updatePassword(UserPutRequest $request) 
   {
-    $updated = User::whereId($request->userId)->update($request->all());
+    $password = $request['password'];
+    $password = password_hash($password, PASSWORD_DEFAULT);
+    $updated = User::whereId($request->userId)->update([
+      'password' => $password,
+      'password_updated_at' => date('Y-m-d H:i:s')
+    ]);
     return $updated;
+  }
+
+
+
+  public static function updateEmail(UserPutRequest $request) 
+  {
+    $email = $request['emailAddr'];
+    $updated = User::whereId($request->userId)->update([
+      'emailAddr' => $email,
+      'email_updated_at' => date('Y-m-d H:i:s')
+    ]);
+    return $updated;
+  }
+
+
+
+  public static function updateUsername(UserPutRequest $request)
+  {
+    $userName = $request['userName'];
+    $updated = User::whereId($request->userId)->update([
+      'userName' => $userName,
+      'username_updated_at' => date('Y-m-d H:i:s')
+    ]);
+    return $updated;
+  }
+
+  /**
+   * Soft delete a user record with the given ID.
+   *
+   * @param int $userId A user ID.
+   * @return int Success or failure of the soft delete.
+   */
+  public static function deleteSystemInfo(int $userId)
+  {
+    $deleted = User::whereId($userId)->delete();
+    return $deleted;
   }
 }

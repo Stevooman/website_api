@@ -7,11 +7,17 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Illuminate\Http\Response;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class UserTest extends TestCase
 {
+  /**
+   * Base endpoint URI's to the Users API.
+   */
 	private const USERS_URI = 'api/v1/users';
-
+  private const UPDATE_EMAIL_URI = 'api/v1/email/users';
+  private const UPDATE_PASSWORD_URI = 'api/v1/password/users';
+  private const UPDATE_USERNAME_URI = 'api/v1/username/users';
 
 
 	/**
@@ -26,7 +32,7 @@ class UserTest extends TestCase
 			->assertJsonStructure([
 				'*' => [
 					'id', 'firstName', 'lastName', 
-					'emailAddr', 'email_verified_at', 
+					'emailAddr', 'email_verified_at', 'email_updated_at', 'password_updated_at', 
 					'created_at', 'updated_at', 'deleted_at'
 				]
 			]);
@@ -43,10 +49,10 @@ class UserTest extends TestCase
 	{
 		$password = password_hash($this->faker->password(), PASSWORD_DEFAULT);
 		$user = User::create([
-			'firstName' => $this->faker->firstName(),
-			'lastName' => $this->faker->lastName(),
-			'emailAddr' => $this->faker->email(),
-			'userName' => $this->faker->userName(),
+			'firstName' => $this->faker->firstName,
+			'lastName' => $this->faker->lastName,
+			'emailAddr' => $this->faker->email,
+			'userName' => $this->faker->firstName,
 			'password' => $password,
 			'email_verified_at' => $this->faker->date('Y-m-d H:i:s')
 		]);
@@ -77,10 +83,9 @@ class UserTest extends TestCase
 			'firstName' => $this->faker->firstName,
 			'lastName' => $this->faker->lastName,
 			'emailAddr' => $this->faker->email,
-			'userName' => $this->faker->word,
-			'password' => $password,
-			'email_verified_at' => $this->faker->date('Y-m-d H:i:s')
-		];
+			'userName' => $this->faker->firstName,
+			'password' => $password		
+    ];
 
 		$this->post(self::USERS_URI, $inputData)
 			->assertStatus(Response::HTTP_CREATED)
@@ -92,29 +97,26 @@ class UserTest extends TestCase
 
 
 	/**
-	 * Tests the update method successfully updates a user's email, username, and/or password by ID.
+	 * Tests that a user's email is successfully updated.
 	 *
 	 * @return void
 	 */
-	public function testUserIsUpdatedSuccessfully(): void 
+	public function testEmailIsUpdatedSuccessfully(): void 
 	{
 		$password = password_hash($this->faker->password(), PASSWORD_DEFAULT);
 		$user = User::create([
-			'firstName' => $this->faker->firstName(),
-			'lastName' => $this->faker->lastName(),
-			'emailAddr' => $this->faker->email(),
-			'userName' => $this->faker->userName(),
-			'password' => $password,
-			'email_verified_at' => $this->faker->date('Y-m-d H:i:s')
-		]);
+			'firstName' => $this->faker->firstName,
+			'lastName' => $this->faker->lastName,
+			'emailAddr' => $this->faker->email,
+			'userName' => $this->faker->firstName,
+			'password' => $password		
+    ]);
 
 		$inputData = [
-			'userName' => $this->faker->userName(),
-			'emailAddr' => $this->faker->email(),
-			'password' => password_hash($this->faker->password(), PASSWORD_DEFAULT)
-		];
+			'emailAddr' => $this->faker->email		
+    ];
 
-		$this->put(self::USERS_URI . "/$user->id", $inputData)
+		$this->put(self::UPDATE_EMAIL_URI . "/$user->id", $inputData)
 			->assertStatus(Response::HTTP_OK)
 			->assertExactJson([
 				'updated' => 1
@@ -125,6 +127,70 @@ class UserTest extends TestCase
 
 
 
+  /**
+   * Tests that a user's password is successfully updated.
+   *
+   * @return void
+   */
+  public function testPasswordIsUpdatedSuccessfully(): void
+  {
+    $oldPassword = password_hash($this->faker->password, PASSWORD_DEFAULT);
+    $user = User::create([
+      'firstName' => $this->faker->firstName,
+      'lastName' => $this->faker->lastName,
+      'emailAddr' => $this->faker->email,
+      'userName' => $this->faker->firstName,
+      'password' => $oldPassword
+    ]);
+
+    $newPassword = 'Anyone123@';
+
+    $inputData = [
+      'password' => $newPassword
+    ];
+
+    $this->put(self::UPDATE_PASSWORD_URI . "/$user->id", $inputData)
+      ->assertStatus(Response::HTTP_OK)
+      ->assertExactJson([
+        'updated' => 1
+      ]);
+
+    $updated = User::where('id', $user->id)->first();
+    $this->assertTrue(password_verify($newPassword, $updated->password));
+  }
+
+
+
+  /**
+   * Tests that a user's username is successfully updated.
+   *
+   * @return void
+   */
+  public function testUsernameIsUpdatedSuccessfully(): void
+  {
+    $password = password_hash($this->faker->password, PASSWORD_DEFAULT);
+    $user = User::create([
+      'firstName' => $this->faker->firstName,
+      'lastName' => $this->faker->lastName,
+      'emailAddr' => $this->faker->email,
+      'userName' => $this->faker->firstName,
+      'password' => $password
+    ]);
+
+    $inputData = [
+      'userName' => $this->faker->firstName
+    ];
+
+    $this->put(self::UPDATE_USERNAME_URI . "/$user->id", $inputData)
+      ->assertStatus(Response::HTTP_OK)
+      ->assertExactJson([
+        'updated' => 1
+      ]);
+
+    $this->assertDatabaseHas('users', $inputData);
+  }
+
+
 	/**
 	 * Tests the delete method successfully soft deletes a user record by ID.
 	 *
@@ -132,12 +198,12 @@ class UserTest extends TestCase
 	 */
 	public function testUserIsSoftDeletedSuccessfully(): void 
 	{
-		$password = password_hash($this->faker->password(), PASSWORD_DEFAULT);
+		$password = password_hash($this->faker->password, PASSWORD_DEFAULT);
 		$user = User::create([
-			'firstName' => $this->faker->firstName(),
-			'lastName' => $this->faker->lastName(),
-			'emailAddr' => $this->faker->email(),
-			'userName' => $this->faker->userName(),
+			'firstName' => $this->faker->firstName,
+			'lastName' => $this->faker->lastName,
+			'emailAddr' => $this->faker->email,
+			'userName' => $this->faker->firstName,
 			'password' => $password,
 			'email_verified_at' => $this->faker->date('Y-m-d H:i:s')
 		]);
@@ -150,11 +216,10 @@ class UserTest extends TestCase
 
 		$this->assertSoftDeleted('users', [
 			'id' => $user->id,
-			'firstname' => $user->firstname,
+			'firstName' => $user->firstName,
 			'lastName' => $user->lastName,
 			'emailAddr' => $user->emailAddr,
 			'userName' => $user->userName,
-			'password' => $user->password,
 			'email_verified_at' => $user->email_verified_at
 		]);
 	}

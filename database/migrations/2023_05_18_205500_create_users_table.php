@@ -17,12 +17,15 @@ return new class extends Migration {
 	{
 		Schema::create('users', function (Blueprint $table) {
 			$table->smallIncrements('id')->autoIncrement();
-			$table->string('firstName', 20)->default('');
-			$table->string('lastName', 25)->default('');
-			$table->string('emailAddr', 30)->default('');
+			$table->string('firstName', 25)->default('');
+			$table->string('lastName', 35)->default('');
+			$table->string('emailAddr', 40)->default('');
 			$table->string('userName', 20)->default('');
 			$table->string('password', 255)->default('');
       $table->timestamp('email_verified_at')->nullable();
+      $table->timestamp('email_updated_at')->nullable();
+      $table->timestamp('password_updated_at')->nullable();
+      $table->timestamp('username_updated_at')->nullable();
 			$table->timestamp('created_at')->useCurrent();
 			$table->timestamp('updated_at')->nullable()->default(DB::raw('NULL ON UPDATE CURRENT_TIMESTAMP'));
 			$table->softDeletes();
