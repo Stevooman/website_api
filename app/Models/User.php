@@ -22,6 +22,9 @@ class User extends Authenticatable
   private const COL_USERNAME = 'userName';
   private const COL_PASSWORD = 'password';
   private const COL_VERIFY_EMAIL = 'email_verified_at';
+  private const COL_UPDATE_EMAIL = 'email_updated_at';
+  private const COL_UPDATE_PASSWORD = 'password_updated_at';
+  private const COL_UPDATE_USERNAME = 'username_updated_at';
 
 
 	/**
@@ -50,8 +53,9 @@ class User extends Authenticatable
   public static function showOne(int $userId) 
   {
     $user = DB::table('users')->select('id', self::COL_FIRSTNAME, self::COL_LASTNAME, 
-      self::COL_EMAIL, self::COL_USERNAME, self::COL_VERIFY_EMAIL, 'created_at', 
-      'updated_at', 'deleted_at')
+      self::COL_EMAIL, self::COL_USERNAME, self::COL_VERIFY_EMAIL, 
+      self::COL_UPDATE_EMAIL, self::COL_UPDATE_PASSWORD, self::COL_UPDATE_USERNAME, 
+      'created_at', 'updated_at', 'deleted_at')
       ->where('id', $userId)
       ->get();
 
@@ -75,7 +79,7 @@ class User extends Authenticatable
     $password = password_hash($password, PASSWORD_DEFAULT);
     $updated = User::whereId($request->userId)->update([
       'password' => $password,
-      'password_updated_at' => date('Y-m-d H:i:s')
+      self::COL_UPDATE_PASSWORD => date('Y-m-d H:i:s')
     ]);
     return $updated;
   }
@@ -87,7 +91,7 @@ class User extends Authenticatable
     $email = $request['emailAddr'];
     $updated = User::whereId($request->userId)->update([
       'emailAddr' => $email,
-      'email_updated_at' => date('Y-m-d H:i:s')
+      self::COL_UPDATE_EMAIL => date('Y-m-d H:i:s')
     ]);
     return $updated;
   }
@@ -99,7 +103,7 @@ class User extends Authenticatable
     $userName = $request['userName'];
     $updated = User::whereId($request->userId)->update([
       'userName' => $userName,
-      'username_updated_at' => date('Y-m-d H:i:s')
+      self::COL_UPDATE_USERNAME => date('Y-m-d H:i:s')
     ]);
     return $updated;
   }
