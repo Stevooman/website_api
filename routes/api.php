@@ -45,6 +45,7 @@ Route::controller(SystemsController::class)->group(function () {
 Route::controller(UsersController::class)->group(function () {
   Route::get('users', 'index')->name('users.index');
   Route::get('users/{userId}', 'showOne')->name('users.showOne');
+  Route::get('login', 'showByUsernamePassword')->name('users.showByUsernamePassword');
   Route::post('users', 'create')->name('users.create');
   Route::put('email/users/{userId}', 'updateEmail')->name('users.updateEmail');
   Route::put('password/users/{userId}', 'updatePassword')->name('users.updatePassword');

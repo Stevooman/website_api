@@ -83,7 +83,7 @@ class UserTest extends TestCase
 			'firstName' => $this->faker->firstName,
 			'lastName' => $this->faker->lastName,
 			'emailAddr' => $this->faker->email,
-			'userName' => $this->faker->firstName,
+			'userName' => 'user23',
 			'password' => $password		
     ];
 
@@ -173,7 +173,7 @@ class UserTest extends TestCase
       'firstName' => $this->faker->firstName,
       'lastName' => $this->faker->lastName,
       'emailAddr' => $this->faker->email,
-      'userName' => $this->faker->firstName,
+      'userName' => 'user23',
       'password' => $password
     ]);
 

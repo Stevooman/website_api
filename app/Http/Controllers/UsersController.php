@@ -37,6 +37,20 @@ class UsersController extends Controller
 
 
 	/**
+	 * Show one user's info based on a correct username and password.
+	 *
+	 * @param Request $request An HTTP request object
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function showByUsernamePassword(Request $request) 
+	{
+		$user = User::showByUsernamePassword($request->userName, $request->password);
+		return response()->json($user);
+	}
+
+
+
+	/**
 	 * Adds a new user record to the database.
 	 *
 	 * @param UserPostRequest $request An HTTP request object that contains 

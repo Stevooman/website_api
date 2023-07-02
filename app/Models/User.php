@@ -5,27 +5,31 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Http\Requests\User\UserPostRequest;
 use App\Http\Requests\User\UserPutRequest;
+use Dflydev\DotAccessData\Exception\DataException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class User extends Authenticatable
 {
 	use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
-  private const COL_FIRSTNAME = 'firstName';
-  private const COL_LASTNAME = 'lastName';
-  private const COL_EMAIL = 'emailAddr';
-  private const COL_USERNAME = 'userName';
-  private const COL_PASSWORD = 'password';
-  private const COL_VERIFY_EMAIL = 'email_verified_at';
-  private const COL_UPDATE_EMAIL = 'email_updated_at';
-  private const COL_UPDATE_PASSWORD = 'password_updated_at';
-  private const COL_UPDATE_USERNAME = 'username_updated_at';
-
+  /**
+   * Constants for the fields names in users table.
+   */
+  private const FIRSTNAME = 'firstName';
+  private const LASTNAME = 'lastName';
+  private const EMAIL = 'emailAddr';
+  private const USERNAME = 'userName';
+  private const PASSWORD = 'password';
+  private const VERIFY_EMAIL = 'email_verified_at';
+  private const UPDATE_EMAIL = 'email_updated_at';
+  private const UPDATE_PASSWORD = 'password_updated_at';
+  private const UPDATE_USERNAME = 'username_updated_at';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -33,10 +37,10 @@ class User extends Authenticatable
 	 * @var array<int, string>
 	 */
 	protected $fillable = [
-		self::COL_FIRSTNAME,
-		self::COL_LASTNAME,
-		self::COL_EMAIL,
-		self::COL_USERNAME
+		self::FIRSTNAME,
+		self::LASTNAME,
+		self::EMAIL,
+		self::USERNAME
 	];
 
 	/**
@@ -45,16 +49,31 @@ class User extends Authenticatable
 	 * @var array<int, string>
 	 */
 	protected $hidden = [
-		self::COL_PASSWORD
+
 	];
 
 
-
+/**
+ * Gets one user's info based on a user ID.
+ *
+ * @param integer $userId The ID of a user.
+ * @return \Illuminate\Support\Collection|array
+ */
   public static function showOne(int $userId) 
   {
-    $user = DB::table('users')->select('id', self::COL_FIRSTNAME, self::COL_LASTNAME, 
-      self::COL_EMAIL, self::COL_USERNAME, self::COL_VERIFY_EMAIL, 
-      self::COL_UPDATE_EMAIL, self::COL_UPDATE_PASSWORD, self::COL_UPDATE_USERNAME, 
+    $validator = Validator::make(['id' => $userId], [
+      'id' => 'required|numeric'
+    ]);
+
+    if ($validator->fails()) {
+      $e = new \Exception('Incorrect ID format.');
+      echo $e->getMessage();
+      exit;
+    }
+
+    $user = DB::table('users')->select('id', self::FIRSTNAME, self::LASTNAME, 
+      self::EMAIL, self::USERNAME, self::VERIFY_EMAIL, 
+      self::UPDATE_EMAIL, self::UPDATE_PASSWORD, self::UPDATE_USERNAME, 
       'created_at', 'updated_at', 'deleted_at')
       ->where('id', $userId)
       ->get();
@@ -64,46 +83,112 @@ class User extends Authenticatable
 
 
 
+  public static function showByUsernamePassword(string $userName, string $password) 
+  {
+    $validator = Validator::make(['userName' => $userName], [
+      'userName' => 'required|regex:/^\w{4,20}$/'
+    ]);
+
+    if ($validator->fails()) {
+      $e = new \Exception('Incorrect username format.');
+      echo $e->getMessage();
+      exit;
+    }
+
+    $savedPassword = self::getPassword($userName);
+
+    $user = DB::table('users')->select('id', self::FIRSTNAME, self::LASTNAME, 
+      self::EMAIL, self::USERNAME, self::VERIFY_EMAIL, 
+      self::UPDATE_EMAIL, self::UPDATE_PASSWORD, self::UPDATE_USERNAME, 
+      'created_at', 'updated_at', 'deleted_at')
+      ->where('userName', $userName)
+      ->get();
+    
+    if (count($user) > 0) {
+      if (password_verify($password, $savedPassword->password)) {
+        return $user;
+      } 
+    }
+
+    return [];
+  }
+
+
+
+  /**
+   * Inserts user data into the users table.
+   *
+   * @param UserPostRequest $request An HTTP request object that contains
+   * input validation rules.
+   * @return int Success or failure of the record creation.
+   */
   public static function insertUserInfo(UserPostRequest $request) 
   {
     $request['password'] = password_hash($request['password'], PASSWORD_DEFAULT);
-    $created = User::insert($request->all());
+    $created = User::insert([
+      'firstName' => $request['firstName'],
+      'lastName' => $request['lastName'],
+      'emailAddr' => $request['emailAddr'],
+      'userName' => $request['userName'],
+      'password' => $request['password']
+    ]);
     return $created;
   }
 
 
 
+  /**
+   * Updates a user's password. The user record is found by ID.
+   *
+   * @param UserPutRequest $request An HTTP request object that contains 
+   * input validation rules.
+   * @return int Success or failure of the update.
+   */
   public static function updatePassword(UserPutRequest $request) 
   {
     $password = $request['password'];
     $password = password_hash($password, PASSWORD_DEFAULT);
     $updated = User::whereId($request->userId)->update([
       'password' => $password,
-      self::COL_UPDATE_PASSWORD => date('Y-m-d H:i:s')
+      self::UPDATE_PASSWORD => date('Y-m-d H:i:s')
     ]);
     return $updated;
   }
 
 
 
+  /**
+   * Updates the email address of a user, found by ID.
+   *
+   * @param UserPutRequest $request An HTTP request object that contains 
+   * input validation rules.
+   * @return int Success or failure of the update.
+   */
   public static function updateEmail(UserPutRequest $request) 
   {
     $email = $request['emailAddr'];
     $updated = User::whereId($request->userId)->update([
       'emailAddr' => $email,
-      self::COL_UPDATE_EMAIL => date('Y-m-d H:i:s')
+      self::UPDATE_EMAIL => date('Y-m-d H:i:s')
     ]);
     return $updated;
   }
 
 
 
+  /**
+   * Updates the username of a user, found by ID.
+   *
+   * @param UserPutRequest $request An HTTP request object that contains 
+   * input validation rules.
+   * @return int Success or failure of the update.
+   */
   public static function updateUsername(UserPutRequest $request)
   {
     $userName = $request['userName'];
     $updated = User::whereId($request->userId)->update([
       'userName' => $userName,
-      self::COL_UPDATE_USERNAME => date('Y-m-d H:i:s')
+      self::UPDATE_USERNAME => date('Y-m-d H:i:s')
     ]);
     return $updated;
   }
@@ -118,5 +203,21 @@ class User extends Authenticatable
   {
     $deleted = User::whereId($userId)->delete();
     return $deleted;
+  }
+
+
+
+  /**
+   * Gets the hashed password for verification of a username.
+   *
+   * @param string $userName A username.
+   * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
+   */
+  private static function getPassword(string $userName) {
+    $password = DB::table('users')->select('password')
+      ->where('userName', $userName)
+      ->first();
+
+    return $password;
   }
 }
