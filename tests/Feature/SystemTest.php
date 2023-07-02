@@ -11,6 +11,7 @@ use Tests\TestCase;
 
 class SystemTest extends TestCase
 {
+  private const SYSTEMS_URI = 'api/v1/systems';
   /**
    * Tests the index function to see if it returns all data from systems.
    *
@@ -18,7 +19,7 @@ class SystemTest extends TestCase
    */
 	public function testIndexReturnsAllSystems(): void 
 	{
-		$this->get('api/v1/systems')
+		$this->get(self::SYSTEMS_URI)
 			->assertStatus(Response::HTTP_OK)
 			->assertJsonStructure([
 				'*' => [
@@ -48,7 +49,7 @@ class SystemTest extends TestCase
 			'releaseDate' => $this->faker->date('Y-m-d')
 		]);
 
-		$this->get("api/v1/systems/$system->id")
+		$this->get(self::SYSTEMS_URI . "/$system->id")
 			->assertStatus(Response::HTTP_OK)
 			->assertJsonFragment([
 				'id' => $system->id,
@@ -150,7 +151,7 @@ class SystemTest extends TestCase
       'releaseDate' => $this->faker->date
     ];
 
-    $this->post('api/v1/systems', $inputData)
+    $this->post(self::SYSTEMS_URI, $inputData)
       ->assertStatus(Response::HTTP_CREATED)
       ->assertExactJson([
         'status' => 'success'
@@ -182,7 +183,7 @@ class SystemTest extends TestCase
       'releaseDate' => $this->faker->date
     ];
 
-    $this->put('api/v1/systems/' . $system->id, $inputData)
+    $this->put(self::SYSTEMS_URI . "/$system->id", $inputData)
       ->assertStatus(Response::HTTP_OK)
       ->assertExactJson([
         'updated' => 1
@@ -211,7 +212,7 @@ class SystemTest extends TestCase
       'releaseDate' => $this->faker->date
     ]);
 
-    $this->delete("api/v1/systems/$system->id")
+    $this->delete(self::SYSTEMS_URI . "/$system->id")
       ->assertStatus(Response::HTTP_OK)
       ->assertExactJson([
         'deleted' => 1

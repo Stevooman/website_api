@@ -8,10 +8,11 @@ use App\Models\Company;
 
 class CompanyTest extends TestCase
 {
+  private const COMPANIES_URI = 'api/v1/companies';
 
   public function testIndexReturnsAllCompaniesInTable(): void 
   {
-    $this->get('api/v1/companies')
+    $this->get(self::COMPANIES_URI)
       ->assertStatus(Response::HTTP_OK)
       ->assertJsonStructure([
         '*' => [
@@ -29,7 +30,7 @@ class CompanyTest extends TestCase
       'companyAddr' => $this->faker->address
     ]);
     
-    $this->get("api/v1/companies/$company->id")
+    $this->get(self::COMPANIES_URI . "/$company->id")
       ->assertStatus(Response::HTTP_OK)
       ->assertJsonFragment([
         'id' => $company->id,
@@ -68,7 +69,7 @@ class CompanyTest extends TestCase
       'active' => 1
     ];
 
-    $this->post('api/v1/companies', $inputData)
+    $this->post(self::COMPANIES_URI, $inputData)
       ->assertStatus(Response::HTTP_CREATED)
       ->assertExactJson([
         'status' => 'success'
@@ -91,7 +92,7 @@ class CompanyTest extends TestCase
       'companyAddr' => $this->faker->address
     ];
 
-    $this->put('api/v1/companies/' . $company->id, $inputData)
+    $this->put(self::COMPANIES_URI . "/$company->id", $inputData)
       ->assertStatus(Response::HTTP_OK)
       ->assertExactJson([
         'updated' => 1
@@ -109,7 +110,7 @@ class CompanyTest extends TestCase
       'companyAddr' => $this->faker->address
     ]);
 
-    $this->delete("api/v1/companies/$company->id")
+    $this->delete(self::COMPANIES_URI . "/$company->id")
       ->assertStatus(Response::HTTP_OK)
       ->assertExactJson([
         'deleted' => 1
