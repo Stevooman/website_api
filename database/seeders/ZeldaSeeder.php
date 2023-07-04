@@ -13,7 +13,7 @@ class ZeldaSeeder extends Seeder
 	 */
 	public function run(): void
 	{
-		DB::table('legend_of_zelda')->insert([
+		DB::table('zelda_games')->insert([
 			[
         'systemId' => 13,
         'title' => 'Breath of the Wild'

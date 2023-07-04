@@ -15,7 +15,7 @@ return new class extends Migration {
 	 */
 	public function up(): void
 	{
-		Schema::create('legend_of_zelda', function (Blueprint $table) {
+		Schema::create('zelda_games', function (Blueprint $table) {
 			$table->tinyIncrements('id')->autoIncrement();
 			$table->tinyInteger('systemId')->default(0)->unsigned();
 			$table->string('title', 40)->default('');

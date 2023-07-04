@@ -24,7 +24,7 @@ return new class extends Migration {
 			$table->softDeletes();
 
 			$table->foreign('userId')->references('id')->on('users')->onDelete('cascade');
-			$table->foreign('zGameId')->references('id')->on('legend_of_zelda')->onDelete('cascade');
+			$table->foreign('zGameId')->references('id')->on('zelda_games')->onDelete('cascade');
 		});
 	}
 
