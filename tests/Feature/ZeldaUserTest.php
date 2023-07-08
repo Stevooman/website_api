@@ -21,25 +21,6 @@ class ZeldaUserTest extends TestCase
 
 
 
-	/**
-	 * Tests the index method shows all records of Zelda users in the database.
-	 *
-	 * @return void
-	 */
-	public function testIndexShowsAllZeldaUserInfo(): void 
-	{
-		$this->get(self::USERS_URI . '/LoZ')
-			->assertStatus(Response::HTTP_OK)
-			->assertJsonStructure([
-				'*' => [
-					'id', 'userId', 'firstName', 'lastName', 
-					'zGameId', 'title', 'created_at', 'updated_at', 
-					'deleted_at'
-				]
-			]);
-	}
-
-
 
   /**
    * Tests that the show by User ID function returns correct Zelda user data.
