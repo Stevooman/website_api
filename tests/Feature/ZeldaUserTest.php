@@ -71,6 +71,69 @@ class ZeldaUserTest extends TestCase
 
 
   /**
+   * Tests that the correct data is returned when a User ID has more than one
+   * Zelda game registered.
+   *
+   * @return void
+   */
+  public function testShowOneReturnsCorrectDataForMultipleGamesForOneUser(): void 
+  {
+    $company = Company::create([
+      'companyName' => $this->faker->name,
+      'companyAddr' => $this->faker->address
+    ]);
+
+    $system = System::create([
+      'name' => $this->faker->name,
+      'companyId' => $company->id,
+      'releaseDate' => $this->faker->date('Y-m-d')
+    ]);
+
+    $zeldaGame1 = ZeldaGame::create([
+      'systemId' => $system->id,
+      'title' => $this->faker->word()
+    ]);
+    $zeldaGame2 = ZeldaGame::create([
+      'systemId' => $system->id,
+      'title' => $this->faker->word()
+    ]);
+
+    $password = password_hash($this->faker->password(), PASSWORD_DEFAULT);
+    $user = User::create([
+      'firstName' => $this->faker->firstName,
+      'lastName' => $this->faker->lastName,
+      'emailAddr' => $this->faker->email,
+      'userName' => $this->faker->firstName,
+      'password' => $password,
+      'email_verified_at' => $this->faker->date('Y-m-d H:i:s')
+    ]);
+
+    $zUser1 = ZeldaUser::create([
+      'userId' => $user->id,
+      'zGameId' => $zeldaGame1->id
+    ]);
+    $zUser2 = ZeldaUser::create([
+      'userId' => $user->id,
+      'zGameId' => $zeldaGame2->id
+    ]);
+
+    $this->get(self::USERS_URI . "/$user->id" . '/LoZ')
+      ->assertStatus(Response::HTTP_OK)
+      ->assertJsonStructure([
+        '*' => [
+          'userId', 'firstName', 'lastName', 'games' => [
+            '*' => [
+              'zGameId', 'title', 'created_at', 
+              'updated_at', 'deleted_at'
+            ]
+          ]
+        ]
+      ]);
+  }
+
+
+
+  /**
    * Tests the create function to see if a zelda user record is created successfully.
    *
    * @return void
