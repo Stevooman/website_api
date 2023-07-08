@@ -52,3 +52,10 @@ Route::controller(UsersController::class)->group(function () {
   Route::put('username/users/{userId}', 'updateUsername')->name('users.updatePassword');
   Route::delete('users/{userId}', 'delete')->name('users.delete');
 });
+
+// Zelda Users
+Route::controller(ZeldaUsersController::class)->group(function () {
+  Route::get('users/{userId}/LoZ', 'showOne')->name('zeldausers.showOne');
+  Route::post('users/LoZ', 'create')->name('zeldausers.create');
+  Route::delete('users/{userId}/LoZ', 'delete')->name('zeldausers.delete');
+});
