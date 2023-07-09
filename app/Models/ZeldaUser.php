@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use stdClass;
 
+/**
+ * This class contains constants for the column names for the table, 
+ * as well as methods that act upon the 'zelda_users' table in the database.
+ * These methods include create, delete, and show functions. Additionally, a 
+ * array property '$fillable' holds the column names that are mass assignable
+ * in a create or update call.
+ */
 class ZeldaUser extends Model
 {
 	use HasFactory, SoftDeletes;
@@ -85,6 +92,13 @@ class ZeldaUser extends Model
 
 
 
+  /**
+   * Insert user's zelda game data into the zelda_users table.
+   *
+   * @param ZeldaUserPostRequest $request An HTTP request object that contains 
+   * all of the input validation info.
+   * @return int
+   */
   public static function insertZeldaUserInfo(ZeldaUserPostRequest $request) 
   {
     $created = ZeldaUser::insert([
@@ -97,6 +111,13 @@ class ZeldaUser extends Model
 
 
 
+  /**
+   * Soft deletes one zelda user's info based on a given userId and zGameId.
+   *
+   * @param integer $userId A User ID.
+   * @param integer $zGameId A zelda game ID.
+   * @return int
+   */
   public static function deleteZeldaUserInfo(int $userId, int $zGameId) 
   {
     $validator = Validator::make(['id' => $userId, 'zGameId' => $zGameId], [
