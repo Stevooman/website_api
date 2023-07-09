@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Requests\User\ZeldaUserPostRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -33,7 +34,7 @@ class ZeldaUser extends Model
    * @param integer $userId The ID of a user.
    * @return \Illuminate\Support\Collection|array|stdClass
    */
-  public function showOneByUserId(int $userId)
+  public static function showOneByUserId(int $userId)
   {
     $validator = Validator::make(['id' => $userId], [
       'id' => 'required|numeric'
@@ -45,7 +46,7 @@ class ZeldaUser extends Model
       exit;
     }
 
-    $userInfo = DB::table('zelda_users')->select('id', 'zelda_users.userId', 'firstName', 'lastName', 
+    $userInfo = DB::table('zelda_users')->select('zelda_users.id AS zeldaUserId', 'zelda_users.userId', 'firstName', 'lastName', 
       'zGameId', 'title', 'zelda_users.created_at', 'zelda_users.updated_at', 
       'zelda_users.deleted_at')
       ->leftJoin('users', 'users.id', '=', 'zelda_users.userId')
@@ -53,32 +54,63 @@ class ZeldaUser extends Model
       ->where('zelda_users.userId', $userId)
       ->get();
 
-      if (count($userInfo) > 1) {
-        $counter = 0;
-        $dataPacket = new stdClass();
-        $games = [];
+    $dataPacket = new stdClass();
+    $games = [];
+    if (count($userInfo) > 0) {
+      $counter = 0;
+      
 
-        foreach ($userInfo as $u) {
-          if ($counter == 0) {
-            $dataPacket->userId = $u->userId;
-            $dataPacket->firstName = $u->firstName;
-            $dataPacket->lastName = $u->lastName;
-          }
-
-          array_push($games, (object) [
-            'zGameId' => $u->zGameId,
-            'title' => $u->title,
-            'created_at' => $u->created_at,
-            'updated_at' => $u->updated_at,
-            'deleted_at' => $u->deleted_at
-          ]);
-          $counter++;
+      foreach ($userInfo as $u) {
+        if ($counter == 0) {
+          $dataPacket->userId = $u->userId;
+          $dataPacket->firstName = $u->firstName;
+          $dataPacket->lastName = $u->lastName;
         }
 
-        $dataPacket->games = $games;
-        return $dataPacket;
+        array_push($games, (object) [
+          'zGameId' => $u->zGameId,
+          'title' => $u->title,
+          'created_at' => $u->created_at,
+          'updated_at' => $u->updated_at,
+          'deleted_at' => $u->deleted_at
+        ]);
+        $counter++;
       }
+      
+      $dataPacket->games = $games;
+    }
 
-      return $userInfo;
+    return $dataPacket;
+  }
+
+
+
+  public static function insertZeldaUserInfo(ZeldaUserPostRequest $request) 
+  {
+    $created = ZeldaUser::insert([
+      'userId' => $request['userId'],
+      'zGameId' => $request['zGameId']
+    ]);
+
+    return $created;
+  }
+
+
+
+  public static function deleteZeldaUserInfo(int $userId, int $zGameId) 
+  {
+    $validator = Validator::make(['id' => $userId, 'zGameId' => $zGameId], [
+      'id' => 'required|numeric',
+      'zGameId' => 'required|numeric'
+    ]);
+
+    if ($validator->fails()) {
+      $e = new \Exception('Incorrect ID format.');
+      echo $e->getMessage();
+      exit;
+    }
+
+    $deleted = ZeldaUser::where('userId', $userId)->where('zGameId', $zGameId)->delete();
+    return $deleted;
   }
 }
