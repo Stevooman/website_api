@@ -63,8 +63,14 @@ class ZeldaUserTest extends TestCase
     $this->get(self::USERS_URI . "/$user->id" . '/LoZ')
       ->assertStatus(Response::HTTP_OK)
       ->assertJsonStructure([
-        'id', 'userId', 'firstName', 'lastName', 
-        'zGameId', 'title', 'created_at', 'updated_at', 'deleted_at'
+        'userId', 'firstName', 'lastName', 'games' => ['*' => 
+          ['zGameId', 
+          'title', 
+          'created_at', 
+          'updated_at', 
+          'deleted_at'
+          ]
+        ]
       ]);
   }
 
@@ -120,12 +126,12 @@ class ZeldaUserTest extends TestCase
     $this->get(self::USERS_URI . "/$user->id" . '/LoZ')
       ->assertStatus(Response::HTTP_OK)
       ->assertJsonStructure([
-        '*' => [
-          'userId', 'firstName', 'lastName', 'games' => [
-            '*' => [
-              'zGameId', 'title', 'created_at', 
-              'updated_at', 'deleted_at'
-            ]
+        'userId', 'firstName', 'lastName', 'games' => ['*' => 
+          ['zGameId', 
+          'title', 
+          'created_at', 
+          'updated_at', 
+          'deleted_at'
           ]
         ]
       ]);
@@ -138,7 +144,7 @@ class ZeldaUserTest extends TestCase
    *
    * @return void
    */
-  private function testZeldaUserIsCreatedSuccessfully(): void 
+  public function testZeldaUserIsCreatedSuccessfully(): void 
   {
     $company = Company::create([
       'companyName' => $this->faker->name,
@@ -184,7 +190,7 @@ class ZeldaUserTest extends TestCase
    *
    * @return void
    */
-  private function testZeldaUserIsSoftDeletedSuccessfully(): void 
+  public function testZeldaUserIsSoftDeletedSuccessfully(): void 
   {
     $company = Company::create([
       'companyName' => $this->faker->name,
@@ -216,7 +222,7 @@ class ZeldaUserTest extends TestCase
       'zGameId' => $zeldaGame->id
     ]);
 
-    $this->delete(self::USERS_URI . "/$user->id" . '/LoZ')
+    $this->delete(self::USERS_URI . "/$user->id" . '/LoZ', ['zGameId' => $zelUser->zGameId])
       ->assertStatus(Response::HTTP_OK)
       ->assertExactJson([
         'deleted' => 1
