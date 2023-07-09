@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\SystemsController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\ZeldaUsersController;
 
 /*
 |--------------------------------------------------------------------------
