@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-	use CreatesApplication, RefreshDatabase;
+	use CreatesApplication, DatabaseTransactions;
 
 	private Generator $faker;
 
