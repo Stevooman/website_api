@@ -13,6 +13,14 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * This class contains constants that contain the column names for the table, 
+ * as well as methods that act upon the 'users' table in the database.
+ * These methods include create, update, and delete functions and show functions that retrieve 
+ * data by a user ID, or a username and password. Additionally, a 
+ * array property '$fillable' holds the column names that are mass assignable
+ * in a create or update call.
+ */
 class User extends Authenticatable
 {
 	use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
@@ -82,6 +90,14 @@ class User extends Authenticatable
 
 
 
+  /**
+   * Get one user's info based on a correct username and password. Password provided is compared to database record 
+   * via the password_verify PHP function.
+   *
+   * @param string $userName A user's username.
+   * @param string $password A user's password.
+   * @return array|\Illuminate\Support\Collection
+   */
   public static function showByUsernamePassword(string $userName, string $password) 
   {
     $validator = Validator::make(['userName' => $userName], [

@@ -178,7 +178,7 @@ class UserTest extends TestCase
     ]);
 
     $inputData = [
-      'userName' => $this->faker->firstName
+      'userName' => 'newUser35'
     ];
 
     $this->put(self::UPDATE_USERNAME_URI . "/$user->id", $inputData)
@@ -203,7 +203,7 @@ class UserTest extends TestCase
 			'firstName' => $this->faker->firstName,
 			'lastName' => $this->faker->lastName,
 			'emailAddr' => $this->faker->email,
-			'userName' => $this->faker->firstName,
+			'userName' => 'user23',
 			'password' => $password,
 			'email_verified_at' => $this->faker->date('Y-m-d H:i:s')
 		]);

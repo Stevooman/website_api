@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     $this->call([
       CompaniesSeeder::class,
       SystemsSeeder::class,
+      UsersSeeder::class,
       ZeldaSeeder::class
     ]);  
   }

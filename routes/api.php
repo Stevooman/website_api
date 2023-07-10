@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\SystemsController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\ZeldaUsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,4 +52,11 @@ Route::controller(UsersController::class)->group(function () {
   Route::put('password/users/{userId}', 'updatePassword')->name('users.updatePassword');
   Route::put('username/users/{userId}', 'updateUsername')->name('users.updatePassword');
   Route::delete('users/{userId}', 'delete')->name('users.delete');
+});
+
+// Zelda Users
+Route::controller(ZeldaUsersController::class)->group(function () {
+  Route::get('users/{userId}/LoZ', 'showOne')->name('zeldausers.showOne');
+  Route::post('users/LoZ', 'create')->name('zeldausers.create');
+  Route::delete('users/{userId}/LoZ', 'delete')->name('zeldausers.delete');
 });

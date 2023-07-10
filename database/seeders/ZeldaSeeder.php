@@ -13,7 +13,7 @@ class ZeldaSeeder extends Seeder
 	 */
 	public function run(): void
 	{
-		DB::table('legend_of_zelda')->insert([
+		DB::table('zelda_games')->insert([
 			[
         'systemId' => 13,
         'title' => 'Breath of the Wild'
@@ -35,5 +35,41 @@ class ZeldaSeeder extends Seeder
         'title' => 'The Wind Waker'
       ]
 		]);
+
+
+
+    // Zelda Users
+    DB::table('zelda_users')->insert([
+      [
+        'userId' => 1,
+        'zGameId' => 3,
+
+      ],
+      [
+        'userId' => 3,
+        'zGameId' => 1,
+
+      ],
+      [
+        'userId' => 2,
+        'zGameId' => 2,
+
+      ],
+      [
+        'userId' => 5,
+        'zGameId' => 4,
+
+      ],
+      [
+        'userId' => 3,
+        'zGameId' => 4,
+
+      ],
+      [
+        'userId' => 1,
+        'zGameId' => 5,
+
+      ]
+    ]);
 	}
 }
